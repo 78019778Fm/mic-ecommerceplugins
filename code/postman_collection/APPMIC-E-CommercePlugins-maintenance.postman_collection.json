@@ -1,0 +1,1100 @@
+{
+	"info": {
+		"_postman_id": "97bc77cd-d2fb-4e9e-b404-86c6286aa1db",
+		"name": "APPMIC-E-CommercePlugins-maintenance",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9753857",
+		"_collection_link": "https://orange-space-3640.postman.co/workspace/APPMIC-E-CommercePlugins~1c50689a-d05f-493d-854e-1ce929da7564/collection/9753857-97bc77cd-d2fb-4e9e-b404-86c6286aa1db?action=share&source=collection_link&creator=9753857"
+	},
+	"item": [
+		{
+			"name": "Categoría",
+			"item": [
+				{
+					"name": "Listar Categorías",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/api/category/listCategory",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"category",
+								"listCategory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Categorías Activas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/api/category/listActiveCategory",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"category",
+								"listActiveCategory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Desactivar o Activar Categoría",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/api/category/desactivateOrActivateCategory/11/false",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"category",
+								"desactivateOrActivateCategory",
+								"11",
+								"false"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Encontrar por Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/api/category/getById/1",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"category",
+								"getById",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Guardar Categoría",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"Equipos de Sonido\",\r\n    \"isActive\": true,\r\n    \"parentCategory\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9090/api/category/saveCategory",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"category",
+								"saveCategory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Categoría",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"Sección Moda\",\r\n    \"isActive\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9090/api/category/updateCategory/1",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"category",
+								"updateCategory",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Categoría",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/api/category/deleteCategory/2",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"category",
+								"deleteCategory",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Clientes",
+			"item": [
+				{
+					"name": "Listar Clientes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/api/customer/listCustomer",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"customer",
+								"listCustomer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Desactivar o Activar Cliente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/api/customer/desactivateOrActivateCustomer/1/true",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"customer",
+								"desactivateOrActivateCustomer",
+								"1",
+								"true"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Encontrar por Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/api/customer/getById/1",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"customer",
+								"getById",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Guardar Cliente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"John\",\r\n    \"lastName\": \"Doe\",\r\n    \"gender\": \"M\",\r\n    \"birthdate\": \"1990-05-15T00:00:00.000Z\",\r\n    \"email\": \"john.doe@example.com\",\r\n    \"phoneNumberOne\": \"+123456789\",\r\n    \"phoneNumberTwo\": \"+987654321\",\r\n    \"phoneNumberThree\": \"+192837465\",\r\n    \"address\": {\r\n        \"type\": \"Home\",\r\n        \"addressName\": \"123 Main St\",\r\n        \"residenceNumber\": \"456\",\r\n        \"department\": \"Building A\",\r\n        \"province\": \"Springfield\",\r\n        \"district\": \"Downtown\",\r\n        \"placeReference\": \"Near Central Park\",\r\n        \"postalCode\": \"12345\"\r\n    },\r\n    \"isActive\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9090/api/customer/saveCustomer",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"customer",
+								"saveCustomer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Cliente",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Luigui Alexander\",\r\n    \"lastName\": \"Fuentes Medina\",\r\n    \"gender\": \"M\",\r\n    \"birthdate\": \"1999-12-19T15:30:20.000Z\",\r\n    \"email\": \"alexanderfuentes199912@gmail.com\",\r\n    \"phoneNumberOne\": \"917967148\",\r\n    \"phoneNumberTwo\": \"074287079\",\r\n    \"phoneNumberThree\": \"\",\r\n    \"address\": {\r\n        \"id\": 1,\r\n        \"type\": \"Casa\",\r\n        \"addressName\": \"Prolongación Sucre\",\r\n        \"residenceNumber\": \"903\",\r\n        \"department\": \"Lambayeque\",\r\n        \"province\": \"Ferreñafe\",\r\n        \"district\": \"Ferreñafe\",\r\n        \"placeReference\": \"Cerca de la avenida takahasi nuñez\",\r\n        \"postalCode\": \"14311\"\r\n    },\r\n    \"isActive\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9090/api/customer/updateCustomer/2",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"customer",
+								"updateCustomer",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Cliente",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/api/customer/deleteCustomer/1",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"customer",
+								"deleteCustomer",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Empleados",
+			"item": [
+				{
+					"name": "Listar Empleados",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/api/employee/listEmployee",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"employee",
+								"listEmployee"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Desactivar o Activar Empleado",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/api/employee/desactivateOrActivateEmployee/1/true",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"employee",
+								"desactivateOrActivateEmployee",
+								"1",
+								"true"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Encontrar por Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/api/employee/getById/1",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"employee",
+								"getById",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Guardar Empleado",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"John\",\r\n    \"lastName\": \"Doe\",\r\n    \"gender\": \"M\",\r\n    \"birthdate\": \"1990-01-15\",\r\n    \"email\": \"johndoe@example.com\",\r\n    \"phoneNumber\": \"+1234567890\",\r\n    \"address\": {\r\n        \"type\": \"Home\",\r\n        \"addressName\": \"123 Main St\",\r\n        \"residenceNumber\": \"456\",\r\n        \"department\": \"Building A\",\r\n        \"province\": \"Springfield\",\r\n        \"district\": \"Downtown\",\r\n        \"placeReference\": \"Near Central Park\",\r\n        \"postalCode\": \"12345\"\r\n    },\r\n    \"isActive\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9090/api/employee/saveEmployee",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"employee",
+								"saveEmployee"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Empleado",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Dagner Anibal\",\r\n    \"lastName\": \"Chúman\",\r\n    \"gender\": \"M\",\r\n    \"birthdate\": \"1999-06-15T16:20:56.000Z\",\r\n    \"email\": \"dagnersmooth@example.com\",\r\n    \"phoneNumber\": \"+51917967148\",\r\n    \"address\": {\r\n        \"type\": \"Casa\",\r\n        \"addressName\": \"San Roque U.V Los Olivos\",\r\n        \"residenceNumber\": \"456\",\r\n        \"department\": \"Lambayeque\",\r\n        \"province\": \"Ferreñafe\",\r\n        \"district\": \"Ferreñafe\",\r\n        \"placeReference\": \"Por el parque del algodonal\",\r\n        \"postalCode\": \"14311\"\r\n    },\r\n    \"isActive\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9090/api/employee/updateEmployee/1",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"employee",
+								"updateEmployee",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Cliente",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/api/employee/deleteEmployee/1",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"employee",
+								"deleteEmployee",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Producto",
+			"item": [
+				{
+					"name": "Images",
+					"item": [
+						{
+							"name": "Guardar Imagenes del Producto",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/Users/lfuenmed/Documents/images/parlante-jbl-3.png"
+										},
+										{
+											"key": "productId",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:9090/api/productImage/uploadImageProduct",
+									"host": [
+										"localhost"
+									],
+									"port": "9090",
+									"path": [
+										"api",
+										"productImage",
+										"uploadImageProduct"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Eliminar Imagen del Producto",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:9090/api/productImage/deleteImageProduct/1HDIMs24JJ5ue9D1AuakaXNG_btMtXC_t",
+									"host": [
+										"localhost"
+									],
+									"port": "9090",
+									"path": [
+										"api",
+										"productImage",
+										"deleteImageProduct",
+										"1HDIMs24JJ5ue9D1AuakaXNG_btMtXC_t"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Details",
+					"item": [
+						{
+							"name": "Guardar Detalle del Producto",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Condicion del producto\",\r\n    \"description\": \"Nuevo\",\r\n    \"productId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:9090/api/productDetail/saveDetail",
+									"host": [
+										"localhost"
+									],
+									"port": "9090",
+									"path": [
+										"api",
+										"productDetail",
+										"saveDetail"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Detalle del Producto",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Condicion del producto\",\r\n    \"description\": \"Nuevecito\",\r\n    \"productId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:9090/api/productDetail/updateDetail/1",
+									"host": [
+										"localhost"
+									],
+									"port": "9090",
+									"path": [
+										"api",
+										"productDetail",
+										"updateDetail",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Listar Detalle del Producto",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:9090/api/productDetail/listDetailByProductId/1",
+									"host": [
+										"localhost"
+									],
+									"port": "9090",
+									"path": [
+										"api",
+										"productDetail",
+										"listDetailByProductId",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Eliminar Detalle del Producto",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:9090/api/productDetail/deleteDetailById/6",
+									"host": [
+										"localhost"
+									],
+									"port": "9090",
+									"path": [
+										"api",
+										"productDetail",
+										"deleteDetailById",
+										"6"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Info",
+					"item": [
+						{
+							"name": "Listar Productos",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:9090/api/product/listProduct",
+									"host": [
+										"localhost"
+									],
+									"port": "9090",
+									"path": [
+										"api",
+										"product",
+										"listProduct"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Listar Productos Activos",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:9090/api/product/listActiveProduct",
+									"host": [
+										"localhost"
+									],
+									"port": "9090",
+									"path": [
+										"api",
+										"product",
+										"listActiveProduct"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Desactivar o Activar Producto",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:9090/api/product/desactivateOrActivateProduct/1/false",
+									"host": [
+										"localhost"
+									],
+									"port": "9090",
+									"path": [
+										"api",
+										"product",
+										"desactivateOrActivateProduct",
+										"1",
+										"false"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Encontrar por Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:9090/api/product/getById/1",
+									"host": [
+										"localhost"
+									],
+									"port": "9090",
+									"path": [
+										"api",
+										"product",
+										"getById",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Guardar Producto",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"barCode\": \"20019764\",\r\n    \"name\": \"Parlante JBL FLIP 6 BT\",\r\n    \"description\": \"Siente la nueva experiencia de audio inmersivo de JBL Profesional con sus parlantes portatiles, llevalos a cualquier lado, su increíle peso hace sentir que no lleves nada.\",\r\n    \"price\": 429.30,\r\n    \"stock\": 100,\r\n    \"category\": {\r\n        \"id\": 3\r\n    },\r\n    \"brand\": {\r\n        \"id\": 1\r\n    },\r\n    \"isActive\": true,\r\n    \"isRecommended\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:9090/api/product/saveProduct",
+									"host": [
+										"localhost"
+									],
+									"port": "9090",
+									"path": [
+										"api",
+										"product",
+										"saveProduct"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Producto",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"barCode\": \"20019764523\",\r\n    \"name\": \"Parlante JBL FLIP 6 BT\",\r\n    \"description\": \"Siente la nueva experiencia de audio inmersivo de JBL Profesional con sus parlantes portatiles, llevalos a cualquier lado, su increíle peso hace sentir que no lleves nada.\",\r\n    \"price\": 429.30,\r\n    \"stock\": 100,\r\n    \"category\": {\r\n        \"id\": 3\r\n    },\r\n    \"brand\": {\r\n        \"id\": 1\r\n    },\r\n    \"isActive\": true,\r\n    \"isRecommended\": true,\r\n    \"images\": [\r\n        {\r\n            \"imageUrl\": \"https://drive.google.com/file/d/1ShECt1bsxXZqKSC1JcVYpuRRtrUGtUQ/view\"\r\n        }\r\n    ],\r\n    \"details\": [\r\n        {\r\n            \"name\": \"Conexión WiFi\",\r\n            \"description\": \"No\"\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:9090/api/product/updateProduct/1",
+									"host": [
+										"localhost"
+									],
+									"port": "9090",
+									"path": [
+										"api",
+										"product",
+										"updateProduct",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Eliminar Producto",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:9090/api/product/deleteProduct/1",
+									"host": [
+										"localhost"
+									],
+									"port": "9090",
+									"path": [
+										"api",
+										"product",
+										"deleteProduct",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Revisar Productos",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "localhost:9090/api/product/checkProducts?ids=1",
+									"host": [
+										"localhost"
+									],
+									"port": "9090",
+									"path": [
+										"api",
+										"product",
+										"checkProducts"
+									],
+									"query": [
+										{
+											"key": "ids",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Marca",
+			"item": [
+				{
+					"name": "Listar Marcas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/api/brand/listBrand",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"brand",
+								"listBrand"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Marcas Activas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/api/brand/listActiveBrand",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"brand",
+								"listActiveBrand"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Marca por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/api/brand/getById/3",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"brand",
+								"getById",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Guardar Marca",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"SONY\",\r\n    \"isActive\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9090/api/brand/saveBrand",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"brand",
+								"saveBrand"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Marca",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"LG\",\r\n    \"isActive\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9090/api/brand/updateBrand/3",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"brand",
+								"updateBrand",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Marca",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/api/brand/deleteBrand/3",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"brand",
+								"deleteBrand",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Desactivar o Activar Brand",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/api/brand/desactivateOrActivateBrand/4/false",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"brand",
+								"desactivateOrActivateBrand",
+								"4",
+								"false"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Google Drive",
+			"item": [
+				{
+					"name": "Guardar Imagen",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/lfuenmed/Downloads/images/parlante-hk-luna-2.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:9090/api/googleDrive/uploadImage",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"googleDrive",
+								"uploadImage"
+							],
+							"query": [
+								{
+									"key": "file",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Imagen",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/api/googleDrive/deleteImage/1acB2MU76Rn3BRUk99P1VDNDyQzgCwb-Rq",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"googleDrive",
+								"deleteImage",
+								"1acB2MU76Rn3BRUk99P1VDNDyQzgCwb-Rq"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Imagen",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/api/googleDrive/getImage/19SG3JqE397Bqx_QWczjdC034_iDQd4w5",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"googleDrive",
+								"getImage",
+								"19SG3JqE397Bqx_QWczjdC034_iDQd4w5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
