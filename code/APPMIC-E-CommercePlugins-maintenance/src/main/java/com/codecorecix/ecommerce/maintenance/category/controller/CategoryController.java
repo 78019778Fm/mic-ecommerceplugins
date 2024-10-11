@@ -59,7 +59,7 @@ public class CategoryController {
     if (ObjectUtils.isNotEmpty(categoryRequestDto.getId())) {
       throw new GenericUnprocessableEntityException(CategoryConstants.UNPROCESSABLE_ENTITY_EXCEPTION);
     } else {
-      return ResponseEntity.status(HttpStatus.OK).body(this.service.saveCategory(categoryRequestDto));
+      return ResponseEntity.status(HttpStatus.CREATED).body(this.service.saveCategory(categoryRequestDto));
     }
   }
 
@@ -75,12 +75,12 @@ public class CategoryController {
     }
   }
 
-  @GetMapping("/desactivateOrActivateCategory/{id}/{isActive}")
-  public ResponseEntity<GenericResponse<CategoryResponseDto>> desactivateOrActivateCategory(@PathVariable(value = "id") final Integer id,
+  @GetMapping("/disabledOrEnabledCategory/{id}/{isActive}")
+  public ResponseEntity<GenericResponse<CategoryResponseDto>> disabledOrEnabledCategory(@PathVariable(value = "id") final Integer id,
       @PathVariable(value = "isActive") final Boolean isActive) {
     final GenericResponse<CategoryResponseDto> response = this.service.findById(id);
     if (ObjectUtils.isNotEmpty(response.getBody())) {
-      return ResponseEntity.status(HttpStatus.OK).body(this.service.desactivateOrActivateCategory(isActive, id));
+      return ResponseEntity.status(HttpStatus.OK).body(this.service.disabledOrEnabledCategory(isActive, id));
     } else {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }

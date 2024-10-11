@@ -9,6 +9,7 @@ import com.codecorecix.ecommerce.maintenance.customer.api.dto.response.CustomerR
 import com.codecorecix.ecommerce.maintenance.customer.service.CustomerService;
 import com.codecorecix.ecommerce.utils.GenericResponse;
 import com.codecorecix.ecommerce.utils.GenericResponseConstants;
+
 import jakarta.validation.Valid;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.http.HttpStatus;
@@ -49,11 +50,11 @@ public class CustomerController {
 
   @PostMapping("/saveCustomer")
   public ResponseEntity<GenericResponse<CustomerResponseDto>> saveCustomer(
-      @Valid @RequestBody final CustomerRequestDto CustomerRequestDto) {
-    if (ObjectUtils.isNotEmpty(CustomerRequestDto.getId())) {
+      @Valid @RequestBody final CustomerRequestDto customerRequestDto) {
+    if (ObjectUtils.isNotEmpty(customerRequestDto.getId())) {
       throw new GenericUnprocessableEntityException(GenericResponseConstants.UNPROCESSABLE_ENTITY_EXCEPTION);
     } else {
-      return ResponseEntity.status(HttpStatus.OK).body(this.service.saveCustomer(CustomerRequestDto));
+      return ResponseEntity.status(HttpStatus.CREATED).body(this.service.saveCustomer(customerRequestDto, false));
     }
   }
 
@@ -62,21 +63,19 @@ public class CustomerController {
       @RequestBody final CustomerRequestDto customerRequestDto) {
     final GenericResponse<CustomerResponseDto> response = this.service.findById(id);
     if (ObjectUtils.isNotEmpty(response.getBody())) {
-      customerRequestDto.setId(id);
-      customerRequestDto.getAddress().setId(response.getBody().getAddress().getId());
-      customerRequestDto.setRegistrationDate(response.getBody().getRegistrationDate());
-      return ResponseEntity.status(HttpStatus.OK).body(this.service.saveCustomer(customerRequestDto));
+      customerRequestDto.setId(response.getBody().getId());
+      return ResponseEntity.status(HttpStatus.OK).body(this.service.saveCustomer(customerRequestDto, true));
     } else {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
   }
 
-  @GetMapping("/desactivateOrActivateCustomer/{id}/{isActive}")
-  public ResponseEntity<GenericResponse<CustomerResponseDto>> desactivateOrActivateCustomer(@PathVariable(value = "id") final Integer id,
+  @GetMapping("/disabledOrEnabledCustomer/{id}/{isActive}")
+  public ResponseEntity<GenericResponse<CustomerResponseDto>> disabledOrEnabledCustomer(@PathVariable(value = "id") final Integer id,
       @PathVariable(value = "isActive") final Boolean isActive) {
     final GenericResponse<CustomerResponseDto> response = this.service.findById(id);
     if (ObjectUtils.isNotEmpty(response.getBody())) {
-      return ResponseEntity.status(HttpStatus.OK).body(this.service.desactivateOrActivateCustomer(isActive, id));
+      return ResponseEntity.status(HttpStatus.OK).body(this.service.disabledOrEnabledCustomer(isActive, id));
     } else {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }

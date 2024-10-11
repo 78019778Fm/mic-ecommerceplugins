@@ -52,7 +52,7 @@ public class OrderStatusController {
     if (ObjectUtils.isNotEmpty(orderStatusRequestDto.getId())) {
       throw new GenericUnprocessableEntityException(OrderStatusConstants.UNPROCESSABLE_ENTITY_EXCEPTION);
     } else {
-      return ResponseEntity.status(HttpStatus.OK).body(this.service.saveStatus(orderStatusRequestDto));
+      return ResponseEntity.status(HttpStatus.CREATED).body(this.service.saveStatus(orderStatusRequestDto));
     }
   }
 
@@ -78,12 +78,12 @@ public class OrderStatusController {
     }
   }
 
-  @GetMapping("/desactivateOrActivateStatus/{id}/{isActive}")
-  public ResponseEntity<GenericResponse<OrderStatusResponseDto>> desactivateOrActivateStatus(@PathVariable(value = "id") final Integer id,
+  @GetMapping("/disabledOrEnabledStatus/{id}/{isActive}")
+  public ResponseEntity<GenericResponse<OrderStatusResponseDto>> disabledOrEnabledStatus(@PathVariable(value = "id") final Integer id,
       @PathVariable(value = "isActive") final Boolean isActive) {
     final GenericResponse<OrderStatusResponseDto> response = this.service.findById(id);
     if (ObjectUtils.isNotEmpty(response.getBody())) {
-      return ResponseEntity.status(HttpStatus.OK).body(this.service.desactivateOrActivateStatus(isActive, id));
+      return ResponseEntity.status(HttpStatus.OK).body(this.service.disabledOrEnabledStatus(isActive, id));
     } else {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }

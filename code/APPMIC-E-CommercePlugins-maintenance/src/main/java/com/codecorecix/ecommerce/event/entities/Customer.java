@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import com.codecorecix.ecommerce.event.superclass.Person;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,7 +28,6 @@ import org.hibernate.annotations.CreationTimestamp;
 @AllArgsConstructor
 @Entity
 @Table(name = "Customers", uniqueConstraints = {
-    @UniqueConstraint(columnNames = "registrationDate", name = "UK_Customers_registrationDate"),
     @UniqueConstraint(columnNames = "email", name = "UK_Customers_email"),
     @UniqueConstraint(columnNames = "phoneNumberOne", name = "UK_Customers_phoneNumberOne"),
     @UniqueConstraint(columnNames = "phoneNumberTwo", name = "UK_Customers_phoneNumberTwo"),
@@ -59,6 +59,15 @@ public class Customer extends Person implements Serializable {
   private Boolean isActive;
 
   @Column
+  private String userRegistration;
+
+  @Column
   @CreationTimestamp
   private LocalDateTime registrationDate;
+
+  @Column
+  private String userModification;
+
+  @Column
+  private LocalDateTime modificationDate;
 }

@@ -19,9 +19,10 @@ public interface CustomerService {
    * Method used to save the customer.
    *
    * @param customerRequestDto The customer request dto.
+   * @param isUpdated Is it updated.
    * @return List of CustomerResponseDto.
    */
-  GenericResponse<CustomerResponseDto> saveCustomer(final CustomerRequestDto customerRequestDto);
+  GenericResponse<CustomerResponseDto> saveCustomer(final CustomerRequestDto customerRequestDto, final boolean isUpdated);
 
   /**
    * Method used to delete the customer.
@@ -37,7 +38,7 @@ public interface CustomerService {
    * @param isActive True if is active or false en otherwise.
    * @return List of CustomerResponseDto.
    */
-  GenericResponse<CustomerResponseDto> desactivateOrActivateCustomer(final Boolean isActive, final Integer id);
+  GenericResponse<CustomerResponseDto> disabledOrEnabledCustomer(final Boolean isActive, final Integer id);
 
   /**
    * Method used to find the customer by id.

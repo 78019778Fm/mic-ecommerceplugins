@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import com.codecorecix.ecommerce.event.entities.Product;
 import com.codecorecix.ecommerce.event.models.ProductInfo;
+import com.codecorecix.ecommerce.maintenance.product.detail.mapper.ProductDetailFieldsMapper;
+import com.codecorecix.ecommerce.maintenance.product.detail.repository.ProductDetailRepository;
 import com.codecorecix.ecommerce.maintenance.product.info.api.dto.request.ProductRequestDto;
 import com.codecorecix.ecommerce.maintenance.product.info.api.dto.response.ProductResponseDto;
 import com.codecorecix.ecommerce.maintenance.product.info.mapper.ProductFieldsMapper;
@@ -24,6 +26,10 @@ public class ProductServiceImpl implements ProductService {
 
   private final ProductRepository productRepository;
 
+  private final ProductDetailRepository productDetailRepository;
+
+  private final ProductDetailFieldsMapper productDetailFieldsMapper;
+
   private final ProductFieldsMapper mapper;
 
   @Override
@@ -42,8 +48,6 @@ public class ProductServiceImpl implements ProductService {
   @Transactional
   public GenericResponse<ProductResponseDto> saveProduct(final ProductRequestDto productRequestDto) {
     final Product productInfo = this.mapper.sourceToDestination(productRequestDto);
-    productInfo.getImages().forEach(image -> image.setProduct(productInfo));
-    productInfo.getDetails().forEach(detail -> detail.setProduct(productInfo));
     final Product product = this.productRepository.save(productInfo);
     return new GenericResponse<>(GenericResponseConstants.RPTA_OK, GenericResponseConstants.CORRECT_OPERATION,
         this.mapper.destinationToSource(product));
@@ -65,10 +69,10 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   @Transactional
-  public GenericResponse<ProductResponseDto> desactivateOrActivateProduct(final Boolean isActive, final Integer id) {
+  public GenericResponse<ProductResponseDto> disabledOrEnabledProduct(final Boolean isActive, final Integer id) {
     final Optional<Product> product = this.productRepository.findById(id);
     if (product.isPresent()) {
-      this.productRepository.desactivateOrActivateProduct(isActive, id);
+      this.productRepository.disabledOrEnabledProduct(isActive, id);
       return new GenericResponse<>(GenericResponseConstants.RPTA_OK, GenericResponseConstants.CORRECT_OPERATION, null);
     } else {
       return new GenericResponse<>(GenericResponseConstants.RPTA_ERROR,

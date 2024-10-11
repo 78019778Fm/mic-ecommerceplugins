@@ -1,9 +1,10 @@
 package com.codecorecix.ecommerce.maintenance.customer.api.dto.request;
 
-import java.time.LocalDateTime;
+import java.io.Serializable;
 import java.util.Date;
 
 import com.codecorecix.ecommerce.event.entities.Address;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CustomerRequestDto {
+public class CustomerRequestDto implements Serializable {
 
   private Integer id;
 
@@ -36,6 +37,4 @@ public class CustomerRequestDto {
   private Address address;
 
   private Boolean isActive;
-
-  private LocalDateTime registrationDate;
 }

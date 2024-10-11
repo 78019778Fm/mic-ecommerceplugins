@@ -1,10 +1,11 @@
 package com.codecorecix.ecommerce.maintenance.product.image.controller;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 
-import com.codecorecix.ecommerce.exception.GenericException;
+import com.codecorecix.ecommerce.exceptions.MaintenanceException;
 import com.codecorecix.ecommerce.maintenance.drive.api.dto.response.GoogleDriveResponse;
 import com.codecorecix.ecommerce.maintenance.drive.service.GoogleDriveService;
 import com.codecorecix.ecommerce.maintenance.product.image.api.dto.request.ProductImageRequestDto;
@@ -13,10 +14,12 @@ import com.codecorecix.ecommerce.maintenance.product.image.service.ProductImageS
 import com.codecorecix.ecommerce.maintenance.product.info.api.dto.response.ProductResponseDto;
 import com.codecorecix.ecommerce.maintenance.product.info.mapper.ProductFieldsMapper;
 import com.codecorecix.ecommerce.maintenance.product.info.service.ProductService;
-import com.codecorecix.ecommerce.utils.GenericErrorMessage;
 import com.codecorecix.ecommerce.utils.GenericResponse;
 import com.codecorecix.ecommerce.utils.GenericResponseConstants;
 import com.codecorecix.ecommerce.utils.GenericUtils;
+import com.codecorecix.ecommerce.utils.MaintenanceErrorMessage;
+import com.codecorecix.ecommerce.utils.MaintenanceUtils;
+
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
@@ -56,18 +59,22 @@ public class ProductImageController {
         final GoogleDriveResponse googleDriveResponse = this.googleDriveService.uploadFile(tempFilePath.toFile(), file.getContentType());
         Files.delete(tempFilePath);
         Files.delete(tempDir);
-        final ProductImageRequestDto productImageRequestDto = this.buildProductImage(file, productId,
-            StringUtils.join(GenericResponseConstants.ORIGINAL_URL, googleDriveResponse.getUrl(), GenericResponseConstants.VIEW));
+        final ProductImageRequestDto productImageRequestDto = new ProductImageRequestDto(null,
+            StringUtils.join(GenericResponseConstants.ORIGINAL_URL, googleDriveResponse.getUrl(), GenericResponseConstants.VIEW),
+            productId);
+        MaintenanceUtils.validRequestDto(productImageRequestDto);
         final GenericResponse<ProductImageResponseDto> productImageResponseDto =
             GenericUtils.buildGenericResponseSuccess(null, this.productImageService.saveImage(productImageRequestDto));
-        return ResponseEntity.status(HttpStatus.OK).body(productImageResponseDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(productImageResponseDto);
       } else {
         Files.delete(tempFilePath);
         Files.delete(tempDir);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(GenericUtils.buildGenericResponseError(MESSAGE, null));
       }
-    } catch (final Exception e) {
-      throw new GenericException(GenericErrorMessage.ERROR_SAVING_IMAGE);
+    } catch (final MaintenanceException e) {
+      throw new MaintenanceException(e.getErrorMessage());
+    } catch (IOException e) {
+      throw new MaintenanceException(MaintenanceErrorMessage.ERROR_RESOURCE_NOT_FOUND);
     }
   }
 
@@ -83,20 +90,8 @@ public class ProductImageController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
             GenericUtils.buildGenericResponseSuccess(null, null));
       }
-    } catch (final Exception e) {
-      throw new GenericException(GenericErrorMessage.ERROR_DELETE_IMAGE);
+    } catch (final MaintenanceException e) {
+      throw new MaintenanceException(MaintenanceErrorMessage.ERROR_DELETE_IMAGE);
     }
-  }
-
-  /**
-   * Méthod for build the product images request.
-   *
-   * @param file the field.
-   * @param productId the product id.
-   * @param urlFile the url file get from Google Drive api.
-   * @return ProductImageRequestDto built.
-   */
-  private ProductImageRequestDto buildProductImage(final MultipartFile file, final Integer productId, final String urlFile) {
-    return new ProductImageRequestDto(null, urlFile, productId, file);
   }
 }

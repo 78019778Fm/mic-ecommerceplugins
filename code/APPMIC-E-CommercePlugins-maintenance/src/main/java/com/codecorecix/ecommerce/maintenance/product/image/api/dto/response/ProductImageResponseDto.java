@@ -16,4 +16,6 @@ public class ProductImageResponseDto implements Serializable {
   private Integer id;
 
   private String imageUrl;
+
+  private Integer productId;
 }

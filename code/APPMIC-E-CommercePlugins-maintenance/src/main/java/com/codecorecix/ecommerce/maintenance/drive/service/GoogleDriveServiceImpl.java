@@ -1,18 +1,18 @@
 package com.codecorecix.ecommerce.maintenance.drive.service;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.Objects;
 
+import com.codecorecix.ecommerce.exceptions.MaintenanceException;
 import com.codecorecix.ecommerce.maintenance.drive.api.dto.response.GoogleDriveResponse;
 import com.codecorecix.ecommerce.maintenance.drive.utils.GoogleDriveConstants;
-import com.codecorecix.ecommerce.utils.GenericErrorMessage;
-import com.codecorecix.ecommerce.exception.GenericException;
 import com.codecorecix.ecommerce.utils.GenericResponseConstants;
+import com.codecorecix.ecommerce.utils.MaintenanceConfigBean;
+import com.codecorecix.ecommerce.utils.MaintenanceErrorMessage;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
@@ -22,17 +22,19 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class GoogleDriveServiceImpl implements GoogleDriveService {
 
-  private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
+  private final MaintenanceConfigBean maintenanceConfigBean;
 
-  private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
+  private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
 
   @Override
   public GoogleDriveResponse uploadFile(final File file, final String mimeType) {
@@ -48,9 +50,11 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
           StringUtils.join(GenericResponseConstants.ORIGINAL_URL, uploadFile.getId(), GenericResponseConstants.VIEW));
       googleDriveResponse.setUrl(uploadFile.getId());
       googleDriveResponse.setMessage(GoogleDriveConstants.SUCCESSFUL_LOAD);
-    } catch (final Exception e) {
+    } catch (final MaintenanceException e) {
       log.info("Error: {}", e.getMessage());
-      googleDriveResponse.setMessage(e.getMessage());
+      throw new MaintenanceException(e.getErrorMessage());
+    } catch (IOException e) {
+      throw new MaintenanceException(MaintenanceErrorMessage.ERROR_INTERNAL);
     }
     return googleDriveResponse;
   }
@@ -64,9 +68,9 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
       drive.files().delete(fileId).execute();
     } catch (final GoogleJsonResponseException e) {
       log.info("Error deleting: {}", e.getDetails().getMessage());
-      throw new GenericException(GenericErrorMessage.ERROR_DELETE_IMAGE);
+      throw new MaintenanceException(MaintenanceErrorMessage.ERROR_DELETE_IMAGE);
     } catch (Exception e) {
-      throw new GenericException(GenericErrorMessage.ERROR_DELETE_IMAGE);
+      throw new MaintenanceException(MaintenanceErrorMessage.ERROR_DELETE_IMAGE);
     }
   }
 
@@ -78,16 +82,23 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
       return new GoogleDriveResponse(GoogleDriveConstants.IMAGE_FOUND, file.getId(),
           StringUtils.join(GenericResponseConstants.ORIGINAL_URL, file.getId(), GenericResponseConstants.VIEW));
     } catch (Exception e) {
-      throw new GenericException(GenericErrorMessage.NOT_FOUND_IMAGE);
+      throw new MaintenanceException(MaintenanceErrorMessage.ERROR_SAVING_IMAGE);
     }
   }
 
-  private Drive createDriveService() throws IOException, GeneralSecurityException {
-    final InputStream in = GoogleDriveService.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+  private Drive createDriveService() {
+    final InputStream in = GoogleDriveService.class.getResourceAsStream(this.maintenanceConfigBean.getCredentialsPath());
     if (Objects.isNull(in)) {
-      throw new FileNotFoundException(StringUtils.joinWith(GenericResponseConstants.COLON, GenericResponseConstants.RESOURCES_NOT_FOUND));
+      throw new MaintenanceException(MaintenanceErrorMessage.ERROR_RESOURCE_NOT_FOUND);
     }
-    GoogleCredential credential = GoogleCredential.fromStream(in).createScoped(Collections.singletonList(DriveScopes.DRIVE));
-    return new Drive.Builder(GoogleNetHttpTransport.newTrustedTransport(), JSON_FACTORY, credential).build();
+    GoogleCredential credential;
+    try {
+      credential = GoogleCredential.fromStream(in).createScoped(Collections.singletonList(DriveScopes.DRIVE));
+      return new Drive.Builder(GoogleNetHttpTransport.newTrustedTransport(), JSON_FACTORY, credential).build();
+    } catch (IOException e) {
+      throw new MaintenanceException(MaintenanceErrorMessage.ERROR_INTERNAL);
+    } catch (GeneralSecurityException e) {
+      throw new MaintenanceException(MaintenanceErrorMessage.ERROR_SECURITY_GOOGLE_DRIVE);
+    }
   }
 }

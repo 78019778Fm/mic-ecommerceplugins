@@ -44,5 +44,5 @@ public interface ProductImageService {
    * @param productId the identifier of the image to be found.
    * @return a {@code ProductImageResponseDto} containing the information of the found image.
    */
-  List<ProductImageResponseDto> findByUrlProductId(final Integer productId);
+  List<ProductImageResponseDto> findByProductId(final Integer productId);
 }

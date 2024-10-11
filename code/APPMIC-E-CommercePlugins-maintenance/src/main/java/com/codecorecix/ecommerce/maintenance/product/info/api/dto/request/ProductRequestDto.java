@@ -1,13 +1,9 @@
 package com.codecorecix.ecommerce.maintenance.product.info.api.dto.request;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.codecorecix.ecommerce.event.entities.Brand;
 import com.codecorecix.ecommerce.event.entities.Category;
-import com.codecorecix.ecommerce.event.entities.ProductDetail;
-import com.codecorecix.ecommerce.event.entities.ProductImage;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -55,10 +51,4 @@ public class ProductRequestDto implements Serializable {
 
   @NotNull(message = "The field is recommended is null, please fill.")
   private Boolean isRecommended;
-
-  @NotEmpty(message = "The images list is empty, please fill")
-  private List<ProductImage> images = new ArrayList<>();
-
-  @NotEmpty(message = "The details list is empty, please fill")
-  private List<ProductDetail> details = new ArrayList<>();
 }
