@@ -15,7 +15,9 @@ public interface ProductImageFieldsMapper {
   @Mapping(target = "product.id", source = "productId")
   ProductImage sourceToDestination(final ProductImageRequestDto source);
 
+  @Mapping(target = "productId", source = "product.id")
   ProductImageResponseDto destinationToSource(final ProductImage destination);
 
+  @Mapping(target = "productId", source = "product.id")
   List<ProductImageResponseDto> toDto(List<ProductImage> entityList);
 }
