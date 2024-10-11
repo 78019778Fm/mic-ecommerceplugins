@@ -5,12 +5,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.codecorecix.ecommerce.exceptions.MaintenanceException;
 import com.codecorecix.ecommerce.utils.GenericResponse;
 import com.codecorecix.ecommerce.utils.GenericResponseConstants;
+import com.codecorecix.ecommerce.utils.MaintenanceErrorMessage;
+
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -20,11 +24,27 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+  public record ErrorResponse(Integer code, String message) {
+
+  }
+
   @ExceptionHandler(Exception.class)
   @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
-  public GenericResponse<Object> genericException(final Exception ex) {
+  public GenericResponse<Object> exception(final Exception ex) {
     return new GenericResponse<>(GenericResponseConstants.RPTA_ERROR,
         StringUtils.joinWith(GenericResponseConstants.DASH, GenericResponseConstants.WRONG_OPERATION), ex.getMessage());
+  }
+
+  @ExceptionHandler(MaintenanceException.class)
+  public ResponseEntity<GenericResponse<Object>> handleMaintenanceException(MaintenanceException ex) {
+    MaintenanceErrorMessage errorMessage = ex.getErrorMessage();
+    HttpStatus status = switch (errorMessage) {
+      case ERROR_NOT_FOUND_IMAGE -> HttpStatus.BAD_REQUEST;
+      case ERROR_SAVING_IMAGE, ERROR_UPDATE_IMAGE, ERROR_DELETE_IMAGE, ERROR_SECURITY_GOOGLE_DRIVE, ERROR_RESOURCE_NOT_FOUND,
+           ERROR_INTERNAL -> HttpStatus.INTERNAL_SERVER_ERROR;
+    };
+    return new ResponseEntity<>(new GenericResponse<>(GenericResponseConstants.RPTA_ERROR, GenericResponseConstants.WRONG_OPERATION,
+        new ErrorResponse(ex.getErrorCode(), errorMessage.getErrorMessage())), status);
   }
 
   @ExceptionHandler(NoHandlerFoundException.class)

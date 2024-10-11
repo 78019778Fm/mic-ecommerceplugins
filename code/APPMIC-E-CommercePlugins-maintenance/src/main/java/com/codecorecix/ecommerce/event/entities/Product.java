@@ -66,7 +66,7 @@ public class Product implements Serializable {
    * <p>Recuerda, no es obligatorio especificar un tipo de carga, pero es buena práctica ser explícito para que el código sea más legible y
    * fácil de mantener.</p>
    */
-  @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, orphanRemoval = true)
   private List<ProductImage> images;
 
   /**
@@ -74,6 +74,6 @@ public class Product implements Serializable {
    * <p>Recuerda, no es obligatorio especificar un tipo de carga, pero es buena práctica ser explícito para que el código sea más legible y
    * fácil de mantener.</p>
    */
-  @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private List<ProductDetail> details;
+  //  @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+  //  private List<ProductDetail> details;
 }

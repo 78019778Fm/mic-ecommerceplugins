@@ -1,19 +1,21 @@
 package com.codecorecix.ecommerce.maintenance.drive.controller;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 
-import com.codecorecix.ecommerce.exception.GenericException;
+import com.codecorecix.ecommerce.exceptions.MaintenanceException;
 import com.codecorecix.ecommerce.maintenance.drive.api.dto.response.GoogleDriveResponse;
 import com.codecorecix.ecommerce.maintenance.drive.service.GoogleDriveService;
 import com.codecorecix.ecommerce.maintenance.drive.utils.GoogleDriveConstants;
 import com.codecorecix.ecommerce.maintenance.product.image.service.ProductImageService;
 import com.codecorecix.ecommerce.maintenance.product.info.mapper.ProductFieldsMapper;
 import com.codecorecix.ecommerce.maintenance.product.info.service.ProductService;
-import com.codecorecix.ecommerce.utils.GenericErrorMessage;
 import com.codecorecix.ecommerce.utils.GenericResponse;
 import com.codecorecix.ecommerce.utils.GenericUtils;
+import com.codecorecix.ecommerce.utils.MaintenanceErrorMessage;
+
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
@@ -51,8 +53,8 @@ public class GoogleDriveController {
       Files.delete(tempDir);
       return ResponseEntity.status(HttpStatus.OK).body(
           GenericUtils.buildGenericResponseSuccess(GoogleDriveConstants.SUCCESSFUL_LOAD, googleDriveResponse));
-    } catch (final Exception e) {
-      throw new GenericException(GenericErrorMessage.ERROR_SAVING_IMAGE);
+    } catch (final IOException e) {
+      throw new MaintenanceException(MaintenanceErrorMessage.ERROR_SAVING_IMAGE);
     }
   }
 
@@ -63,8 +65,8 @@ public class GoogleDriveController {
       return ResponseEntity.status(HttpStatus.OK).body(
           GenericUtils.buildGenericResponseSuccess(GoogleDriveConstants.SUCCESSFUL_REMOVAL,
               new GoogleDriveResponse(GoogleDriveConstants.SUCCESSFUL_REMOVAL, null, null)));
-    } catch (final Exception e) {
-      throw new GenericException(GenericErrorMessage.ERROR_DELETE_IMAGE);
+    } catch (final MaintenanceException e) {
+      throw new MaintenanceException(MaintenanceErrorMessage.ERROR_DELETE_IMAGE);
     }
   }
 
@@ -74,8 +76,8 @@ public class GoogleDriveController {
       final GoogleDriveResponse response = this.googleDriveService.findFileByFileId(fileId);
       return ResponseEntity.status(HttpStatus.OK).body(
           GenericUtils.buildGenericResponseSuccess(GoogleDriveConstants.IMAGE_FOUND, response));
-    } catch (final Exception e) {
-      throw new GenericException(GenericErrorMessage.ERROR_DELETE_IMAGE);
+    } catch (final MaintenanceException e) {
+      throw new MaintenanceException(MaintenanceErrorMessage.ERROR_DELETE_IMAGE);
     }
   }
 }

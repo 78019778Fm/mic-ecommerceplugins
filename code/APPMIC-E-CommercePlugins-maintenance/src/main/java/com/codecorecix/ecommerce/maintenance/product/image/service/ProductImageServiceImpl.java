@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Optional;
 
 import com.codecorecix.ecommerce.event.entities.ProductImage;
+import com.codecorecix.ecommerce.exception.GenericException;
 import com.codecorecix.ecommerce.maintenance.product.image.api.dto.request.ProductImageRequestDto;
 import com.codecorecix.ecommerce.maintenance.product.image.api.dto.response.ProductImageResponseDto;
 import com.codecorecix.ecommerce.maintenance.product.image.mapper.ProductImageFieldsMapper;
 import com.codecorecix.ecommerce.maintenance.product.image.repository.ProductImageRepository;
 import com.codecorecix.ecommerce.utils.GenericErrorMessage;
-import com.codecorecix.ecommerce.exception.GenericException;
 import com.codecorecix.ecommerce.utils.GenericResponseConstants;
 
 import jakarta.transaction.Transactional;
@@ -58,7 +58,7 @@ public class ProductImageServiceImpl implements ProductImageService {
   }
 
   @Override
-  public List<ProductImageResponseDto> findByUrlProductId(final Integer productId) {
+  public List<ProductImageResponseDto> findByProductId(final Integer productId) {
     final List<ProductImage> productImage = this.repository.findProductImagesByProductId(productId);
     if (ObjectUtils.isNotEmpty(productImage)) {
       return this.mapper.toDto(productImage);

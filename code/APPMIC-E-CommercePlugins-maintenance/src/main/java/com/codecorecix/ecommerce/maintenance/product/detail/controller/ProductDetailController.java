@@ -9,6 +9,9 @@ import com.codecorecix.ecommerce.maintenance.product.detail.service.ProductDetai
 import com.codecorecix.ecommerce.utils.GenericErrorMessage;
 import com.codecorecix.ecommerce.utils.GenericResponse;
 import com.codecorecix.ecommerce.utils.GenericUtils;
+import com.codecorecix.ecommerce.utils.MaintenanceUtils;
+
+import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.http.HttpStatus;
@@ -44,9 +47,12 @@ public class ProductDetailController {
   @PostMapping("/saveDetail")
   public ResponseEntity<GenericResponse<ProductDetailResponseDto>> saveDetail(@RequestBody ProductDetailRequestDto requestDto) {
     try {
+      MaintenanceUtils.validRequestDto(requestDto);
       ProductDetailResponseDto productDetailResponseDto = this.productDetailService.saveDetail(requestDto);
       return ResponseEntity.status(HttpStatus.CREATED).body(
           GenericUtils.buildGenericResponseSuccess(null, productDetailResponseDto));
+    } catch (final ConstraintViolationException e) {
+      throw new ConstraintViolationException(e.getConstraintViolations());
     } catch (final Exception e) {
       throw new GenericException(GenericErrorMessage.DATABASE_SAVE_ERROR);
     }
@@ -58,6 +64,7 @@ public class ProductDetailController {
     final ProductDetailResponseDto response = this.productDetailService.findById(id);
     if (ObjectUtils.isNotEmpty(response)) {
       productDetailRequestDto.setId(id);
+      MaintenanceUtils.validRequestDto(productDetailRequestDto);
       return ResponseEntity.status(HttpStatus.OK).body(
           GenericUtils.buildGenericResponseSuccess(null, this.productDetailService.saveDetail(productDetailRequestDto)));
     } else {
