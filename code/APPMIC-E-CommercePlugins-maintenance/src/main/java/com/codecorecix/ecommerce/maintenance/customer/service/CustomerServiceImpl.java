@@ -26,12 +26,12 @@ public class CustomerServiceImpl implements CustomerService {
   private final CustomerFieldsMapper mapper;
 
   @Override
-  public GenericResponse<List<CustomerResponseDto>> listCustomer() {
+  public GenericResponse<List<CustomerResponseDto>> listCustomers() {
     return GenericUtils.buildGenericResponseSuccess(null, this.mapper.toDto(this.repository.findAll()));
   }
 
   @Override
-  public GenericResponse<CustomerResponseDto> saveCustomer(final CustomerRequestDto customerRequestDto, final boolean isUpdated) {
+  public GenericResponse<CustomerResponseDto> save(final CustomerRequestDto customerRequestDto, final boolean isUpdated) {
     final Customer customerMapped = this.mapper.sourceToDestination(customerRequestDto);
     if (isUpdated) {
       final Customer customerBD = this.repository.findById(customerRequestDto.getId()).orElseThrow();
@@ -47,7 +47,7 @@ public class CustomerServiceImpl implements CustomerService {
   }
 
   @Override
-  public GenericResponse<CustomerResponseDto> deleteCustomer(final Integer id) {
+  public GenericResponse<CustomerResponseDto> deleteCustomerById(final Integer id) {
     final Optional<Customer> customer = this.repository.findById(id);
     return customer.map(value -> {
       this.repository.deleteById(id);
@@ -57,7 +57,7 @@ public class CustomerServiceImpl implements CustomerService {
 
   @Override
   @Transactional
-  public GenericResponse<CustomerResponseDto> disabledOrEnabledCustomer(final Boolean isActive, final Integer id) {
+  public GenericResponse<CustomerResponseDto> updateCustomerStatus(final Boolean isActive, final Integer id) {
     final Optional<Customer> customer = this.repository.findById(id);
     return customer.map(value -> {
       this.repository.disabledOrEnabledCustomer(isActive, id);

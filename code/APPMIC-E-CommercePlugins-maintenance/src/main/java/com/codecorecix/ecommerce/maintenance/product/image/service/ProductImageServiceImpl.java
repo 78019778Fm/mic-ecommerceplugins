@@ -66,4 +66,14 @@ public class ProductImageServiceImpl implements ProductImageService {
       return new ArrayList<>();
     }
   }
+
+  @Override
+  @Transactional
+  public void deleteAllImagesByProductId(final Integer productId) {
+    try {
+      this.repository.deleteAllImagesByProductId(productId);
+    } catch (final Exception e) {
+      throw new GenericException(GenericErrorMessage.DATABASE_DELETE_ERROR);
+    }
+  }
 }

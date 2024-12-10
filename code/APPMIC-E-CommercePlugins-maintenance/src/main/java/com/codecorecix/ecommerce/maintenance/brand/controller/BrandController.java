@@ -9,21 +9,25 @@ import com.codecorecix.ecommerce.maintenance.brand.api.dto.response.BrandRespons
 import com.codecorecix.ecommerce.maintenance.brand.service.BrandService;
 import com.codecorecix.ecommerce.maintenance.brand.utils.BrandConstants;
 import com.codecorecix.ecommerce.utils.GenericResponse;
+import com.codecorecix.ecommerce.utils.MaintenanceUtils;
+
 import jakarta.validation.Valid;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/brand")
+@RequestMapping("api/brands")
 public class BrandController {
 
   private final BrandService service;
@@ -32,17 +36,17 @@ public class BrandController {
     this.service = service;
   }
 
-  @GetMapping("/listBrand")
-  public ResponseEntity<GenericResponse<List<BrandResponseDto>>> listBrand() {
-    return ResponseEntity.status(HttpStatus.OK).body(this.service.listBrand());
+  @GetMapping
+  public ResponseEntity<GenericResponse<List<BrandResponseDto>>> getAllBrands() {
+    return ResponseEntity.status(HttpStatus.OK).body(this.service.getAllBrands());
   }
 
-  @GetMapping("/listActiveBrand")
-  public ResponseEntity<GenericResponse<List<BrandResponseDto>>> listActiveBrand() {
-    return ResponseEntity.status(HttpStatus.OK).body(this.service.listActiveBrands());
+  @GetMapping("/active")
+  public ResponseEntity<GenericResponse<List<BrandResponseDto>>> getActiveBrands() {
+    return ResponseEntity.status(HttpStatus.OK).body(this.service.getActiveBrands());
   }
 
-  @GetMapping("/getById/{id}")
+  @GetMapping("/{id}")
   public ResponseEntity<GenericResponse<BrandResponseDto>> getBrandById(@PathVariable(value = "id") final Integer id) {
     final GenericResponse<BrandResponseDto> response = this.service.findById(id);
     if (Objects.nonNull(response.getBody())) {
@@ -52,44 +56,45 @@ public class BrandController {
     }
   }
 
-  @PostMapping("/saveBrand")
-  public ResponseEntity<GenericResponse<BrandResponseDto>> saveBrand(
-      @Valid @RequestBody final BrandRequestDto categoryRequestDto) {
-    if (ObjectUtils.isNotEmpty(categoryRequestDto.getId())) {
+  @PostMapping
+  public ResponseEntity<GenericResponse<BrandResponseDto>> saveBrand(@RequestBody final BrandRequestDto brandRequestDto) {
+    if (ObjectUtils.isNotEmpty(brandRequestDto.getId())) {
       throw new GenericUnprocessableEntityException(BrandConstants.UNPROCESSABLE_ENTITY_EXCEPTION);
     } else {
-      return ResponseEntity.status(HttpStatus.CREATED).body(this.service.saveBrand(categoryRequestDto));
+      MaintenanceUtils.validRequestDto(brandRequestDto);
+      return ResponseEntity.status(HttpStatus.CREATED).body(this.service.save(brandRequestDto));
     }
   }
 
-  @PutMapping("/updateBrand/{id}")
+  @PutMapping("/{id}")
   public ResponseEntity<GenericResponse<BrandResponseDto>> updateBrand(@Valid @PathVariable(value = "id") final Integer id,
-      @RequestBody final BrandRequestDto categoryRequestDto) {
+      @RequestBody final BrandRequestDto brandRequestDto) {
     final GenericResponse<BrandResponseDto> response = this.service.findById(id);
     if (ObjectUtils.isNotEmpty(response.getBody())) {
-      categoryRequestDto.setId(id);
-      return ResponseEntity.status(HttpStatus.OK).body(this.service.saveBrand(categoryRequestDto));
+      brandRequestDto.setId(id);
+      MaintenanceUtils.validRequestDto(brandRequestDto);
+      return ResponseEntity.status(HttpStatus.OK).body(this.service.save(brandRequestDto));
     } else {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
   }
 
-  @GetMapping("/disabledOrEnabledBrand/{id}/{isActive}")
-  public ResponseEntity<GenericResponse<BrandResponseDto>> disabledOrEnabledBrand(@PathVariable(value = "id") final Integer id,
-      @PathVariable(value = "isActive") final Boolean isActive) {
+  @PatchMapping("/{id}/status")
+  public ResponseEntity<GenericResponse<BrandResponseDto>> updateBrandStatus(@PathVariable(value = "id") final Integer id,
+      @RequestParam(value = "isActive") final Boolean isActive) {
     final GenericResponse<BrandResponseDto> response = this.service.findById(id);
     if (ObjectUtils.isNotEmpty(response.getBody())) {
-      return ResponseEntity.status(HttpStatus.OK).body(this.service.disabledOrEnabledBrand(isActive, id));
+      return ResponseEntity.status(HttpStatus.OK).body(this.service.updateBrandStatus(isActive, id));
     } else {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
   }
 
-  @DeleteMapping("/deleteBrand/{id}")
-  public ResponseEntity<GenericResponse<BrandResponseDto>> deleteBrandById(@PathVariable(value = "id") final Integer id) {
+  @DeleteMapping("/{id}")
+  public ResponseEntity<GenericResponse<BrandResponseDto>> deleteBrand(@PathVariable(value = "id") final Integer id) {
     final GenericResponse<BrandResponseDto> response = this.service.findById(id);
     if (ObjectUtils.isNotEmpty(response.getBody())) {
-      return ResponseEntity.status(HttpStatus.OK).body(this.service.deleteBrand(id));
+      return ResponseEntity.status(HttpStatus.OK).body(this.service.deleteById(id));
     } else {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }

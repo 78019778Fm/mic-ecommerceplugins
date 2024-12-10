@@ -13,7 +13,7 @@ public interface EmployeeService {
    *
    * @return List of EmployeeResponseDto.
    */
-  GenericResponse<List<EmployeeResponseDto>> listEmployee();
+  GenericResponse<List<EmployeeResponseDto>> getAllEmployees();
 
   /**
    * Method used to save the employee.
@@ -22,7 +22,7 @@ public interface EmployeeService {
    * @param isUpdated Is it updated.
    * @return List of EmployeeResponseDto.
    */
-  GenericResponse<EmployeeResponseDto> saveEmployee(final EmployeeRequestDto employeeRequestDto, final boolean isUpdated);
+  GenericResponse<EmployeeResponseDto> save(final EmployeeRequestDto employeeRequestDto, final boolean isUpdated);
 
   /**
    * Method used to delete the employee.
@@ -30,15 +30,15 @@ public interface EmployeeService {
    * @param id The id of the employee.
    * @return List of EmployeeResponseDto.
    */
-  GenericResponse<EmployeeResponseDto> deleteEmployee(final Integer id);
+  GenericResponse<EmployeeResponseDto> deleteEmployeeById(final Integer id);
 
   /**
-   * Method used to desactive or activate the employee.
+   * Method used to update the status of the employee.
    *
    * @param isActive True if is active or false en otherwise.
    * @return List of EmployeeResponseDto.
    */
-  GenericResponse<EmployeeResponseDto> disabledOrEnabledEmployee(final Boolean isActive, final Integer id);
+  GenericResponse<EmployeeResponseDto> updateEmployeeStatus(final Boolean isActive, final Integer id);
 
   /**
    * Method used to find the employee by id.

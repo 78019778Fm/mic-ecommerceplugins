@@ -14,14 +14,14 @@ public interface ProductService {
    *
    * @return List of ProductResponseDto.
    */
-  GenericResponse<List<ProductResponseDto>> listProduct();
+  GenericResponse<List<ProductResponseDto>> getAllProducts();
 
   /**
    * Method used to list all active products.
    *
    * @return List of ProductResponseDto.
    */
-  GenericResponse<List<ProductResponseDto>> listActiveProducts();
+  GenericResponse<List<ProductResponseDto>> getActiveProducts();
 
   /**
    * Method used to save the product.
@@ -29,7 +29,7 @@ public interface ProductService {
    * @param productRequestDto The category request dto.
    * @return List of CategoryResponseDto.
    */
-  GenericResponse<ProductResponseDto> saveProduct(final ProductRequestDto productRequestDto);
+  GenericResponse<ProductResponseDto> save(final ProductRequestDto productRequestDto);
 
   /**
    * Method used to delete the product.
@@ -37,15 +37,15 @@ public interface ProductService {
    * @param id The id of the product.
    * @return List of ProductResponseDto.
    */
-  GenericResponse<ProductResponseDto> deleteProduct(final Integer id);
+  GenericResponse<ProductResponseDto> deleteProductById(final Integer id);
 
   /**
-   * Method used to desactive or activate the product.
+   * Method used to update status of the product.
    *
    * @param isActive True if is active or false en otherwise.
    * @return List of ProductResponseDto.
    */
-  GenericResponse<ProductResponseDto> disabledOrEnabledProduct(final Boolean isActive, final Integer id);
+  GenericResponse<ProductResponseDto> updateProductStatus(final Boolean isActive, final Integer id);
 
   /**
    * Method used to find the product by id.

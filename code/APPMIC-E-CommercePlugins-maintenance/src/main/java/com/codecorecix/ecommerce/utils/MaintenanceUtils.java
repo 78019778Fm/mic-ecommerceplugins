@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class MaintenanceUtils {
 
   /**
-   * Méthod for valid the product request dto.
+   * Méthod for valid the object request dto.
    *
    * @param object the object.
    */

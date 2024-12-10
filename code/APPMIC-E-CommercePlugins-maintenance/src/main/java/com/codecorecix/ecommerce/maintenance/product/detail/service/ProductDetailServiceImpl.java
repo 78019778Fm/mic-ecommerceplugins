@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Optional;
 
 import com.codecorecix.ecommerce.event.entities.ProductDetail;
+import com.codecorecix.ecommerce.exception.GenericException;
 import com.codecorecix.ecommerce.maintenance.product.detail.dto.request.ProductDetailRequestDto;
 import com.codecorecix.ecommerce.maintenance.product.detail.dto.response.ProductDetailResponseDto;
 import com.codecorecix.ecommerce.maintenance.product.detail.mapper.ProductDetailFieldsMapper;
 import com.codecorecix.ecommerce.maintenance.product.detail.repository.ProductDetailRepository;
 import com.codecorecix.ecommerce.utils.GenericErrorMessage;
-import com.codecorecix.ecommerce.exception.GenericException;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -49,12 +49,22 @@ public class ProductDetailServiceImpl implements ProductDetailService {
   }
 
   @Override
-  public List<ProductDetailResponseDto> findByProductId(final Integer productId) {
+  public List<ProductDetailResponseDto> getDetailByProductId(final Integer productId) {
     final List<ProductDetail> productDetails = this.repository.findAllDetailByIdProduct(productId);
     if (ObjectUtils.isNotEmpty(productDetails)) {
       return this.mapper.toDto(productDetails);
     } else {
       return new ArrayList<>();
+    }
+  }
+
+  @Override
+  @Transactional
+  public void deleteAllDetailsByProductId(final Integer productId) {
+    try {
+      this.repository.deleteAllDetailsByProductId(productId);
+    } catch (final Exception e) {
+      throw new GenericException(GenericErrorMessage.DATABASE_DELETE_ERROR);
     }
   }
 }

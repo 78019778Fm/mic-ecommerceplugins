@@ -7,6 +7,7 @@ import com.codecorecix.ecommerce.event.entities.ProductDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -18,4 +19,8 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, In
   @Modifying
   @Query("DELETE FROM ProductDetail PD WHERE PD.id = :detailId")
   void deleteDetail(final Integer detailId);
+
+  @Modifying
+  @Query("DELETE FROM ProductDetail PD WHERE PD.product.id = :productId")
+  void deleteAllDetailsByProductId(@Param("productId") Integer productId);
 }

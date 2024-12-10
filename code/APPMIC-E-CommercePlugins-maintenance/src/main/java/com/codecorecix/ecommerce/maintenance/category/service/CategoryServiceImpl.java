@@ -27,14 +27,14 @@ public class CategoryServiceImpl implements CategoryService {
   private final CategoryFieldsMapper mapper;
 
   @Override
-  public GenericResponse<List<CategoryResponseDto>> listCategory() {
+  public GenericResponse<List<CategoryResponseDto>> getAllCategories() {
     final List<Category> categories = this.getHierarchicalList(this.repository.findCategoryByParentCategoryIsNull(), true);
     return new GenericResponse<>(GenericResponseConstants.RPTA_OK, GenericResponseConstants.CORRECT_OPERATION,
         this.mapper.toDto(categories));
   }
 
   @Override
-  public GenericResponse<List<CategoryResponseDto>> listActiveCategories() {
+  public GenericResponse<List<CategoryResponseDto>> getActiveCategories() {
     final List<Category> categories =
         this.getHierarchicalList(this.repository.findCategoryByParentCategoryIsNullAndIsActiveIsTrue(), false);
     return new GenericResponse<>(GenericResponseConstants.RPTA_OK, GenericResponseConstants.CORRECT_OPERATION,
@@ -42,14 +42,14 @@ public class CategoryServiceImpl implements CategoryService {
   }
 
   @Override
-  public GenericResponse<CategoryResponseDto> saveCategory(final CategoryRequestDto categoryRequestDto) {
+  public GenericResponse<CategoryResponseDto> save(final CategoryRequestDto categoryRequestDto) {
     final Category category = (this.repository.save(this.mapper.sourceToDestination(categoryRequestDto)));
     return new GenericResponse<>(GenericResponseConstants.RPTA_OK, GenericResponseConstants.CORRECT_OPERATION,
         this.mapper.destinationToSource(category));
   }
 
   @Override
-  public GenericResponse<CategoryResponseDto> deleteCategory(final Integer id) {
+  public GenericResponse<CategoryResponseDto> deleteCategoryById(final Integer id) {
     final Optional<Category> category = this.repository.findById(id);
     if (category.isPresent()) {
       this.repository.deleteById(id);
@@ -63,7 +63,7 @@ public class CategoryServiceImpl implements CategoryService {
 
   @Override
   @Transactional
-  public GenericResponse<CategoryResponseDto> disabledOrEnabledCategory(final Boolean isActive, final Integer id) {
+  public GenericResponse<CategoryResponseDto> updateCategoryStatus(final Boolean isActive, final Integer id) {
     final Optional<Category> categoryOptional = this.repository.findById(id);
     if (categoryOptional.isPresent()) {
       this.repository.disabledOrEnabledCategory(isActive, id);

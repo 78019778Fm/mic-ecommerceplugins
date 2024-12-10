@@ -36,5 +36,12 @@ public interface ProductDetailService {
    * @param productId the identifier of the detail to be found.
    * @return a {@code ProductImageResponseDto} containing the information of the found detail.
    */
-  List<ProductDetailResponseDto> findByProductId(final Integer productId);
+  List<ProductDetailResponseDto> getDetailByProductId(final Integer productId);
+
+  /**
+   * Method used to delete the details of the product.
+   *
+   * @param productId The id of the product.
+   */
+  void deleteAllDetailsByProductId(final Integer productId);
 }

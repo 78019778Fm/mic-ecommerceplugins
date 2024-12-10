@@ -9,34 +9,36 @@ import com.codecorecix.ecommerce.maintenance.employee.api.dto.response.EmployeeR
 import com.codecorecix.ecommerce.maintenance.employee.service.EmployeeService;
 import com.codecorecix.ecommerce.utils.GenericResponse;
 import com.codecorecix.ecommerce.utils.GenericResponseConstants;
+import com.codecorecix.ecommerce.utils.MaintenanceUtils;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/employee")
+@RequestMapping("api/employees")
 @RequiredArgsConstructor
 public class EmployeeController {
 
   private final EmployeeService service;
 
-  @GetMapping("/listEmployee")
-  public ResponseEntity<GenericResponse<List<EmployeeResponseDto>>> listEmployee() {
-    return ResponseEntity.status(HttpStatus.OK).body(this.service.listEmployee());
+  @GetMapping
+  public ResponseEntity<GenericResponse<List<EmployeeResponseDto>>> getAllEmployees() {
+    return ResponseEntity.status(HttpStatus.OK).body(this.service.getAllEmployees());
   }
 
-  @GetMapping("/getById/{id}")
+  @GetMapping("/{id}")
   public ResponseEntity<GenericResponse<EmployeeResponseDto>> getEmployeeById(@PathVariable(value = "id") final Integer id) {
     final GenericResponse<EmployeeResponseDto> response = this.service.findById(id);
     if (Objects.nonNull(response.getBody())) {
@@ -46,44 +48,45 @@ public class EmployeeController {
     }
   }
 
-  @PostMapping("/saveEmployee")
-  public ResponseEntity<GenericResponse<EmployeeResponseDto>> saveEmployee(
-      @Valid @RequestBody final EmployeeRequestDto employeeRequestDto) {
+  @PostMapping
+  public ResponseEntity<GenericResponse<EmployeeResponseDto>> saveEmployee(@RequestBody final EmployeeRequestDto employeeRequestDto) {
     if (ObjectUtils.isNotEmpty(employeeRequestDto.getId())) {
       throw new GenericUnprocessableEntityException(GenericResponseConstants.UNPROCESSABLE_ENTITY_EXCEPTION);
     } else {
-      return ResponseEntity.status(HttpStatus.CREATED).body(this.service.saveEmployee(employeeRequestDto, false));
+      MaintenanceUtils.validRequestDto(employeeRequestDto);
+      return ResponseEntity.status(HttpStatus.CREATED).body(this.service.save(employeeRequestDto, false));
     }
   }
 
-  @PutMapping("/updateEmployee/{id}")
-  public ResponseEntity<GenericResponse<EmployeeResponseDto>> updateEmployee(@Valid @PathVariable(value = "id") final Integer id,
+  @PutMapping("/{id}")
+  public ResponseEntity<GenericResponse<EmployeeResponseDto>> updateEmployee(@PathVariable(value = "id") final Integer id,
       @RequestBody final EmployeeRequestDto employeeRequestDto) {
     final GenericResponse<EmployeeResponseDto> response = this.service.findById(id);
     if (ObjectUtils.isNotEmpty(response.getBody())) {
-      employeeRequestDto.setId(response.getBody().getId());
-      return ResponseEntity.status(HttpStatus.OK).body(this.service.saveEmployee(employeeRequestDto, true));
+      employeeRequestDto.setId(id);
+      MaintenanceUtils.validRequestDto(employeeRequestDto);
+      return ResponseEntity.status(HttpStatus.OK).body(this.service.save(employeeRequestDto, true));
     } else {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
   }
 
-  @GetMapping("/disabledOrEnabledEmployee/{id}/{isActive}")
-  public ResponseEntity<GenericResponse<EmployeeResponseDto>> disabledOrEnabledEmployee(@PathVariable(value = "id") final Integer id,
-      @PathVariable(value = "isActive") final Boolean isActive) {
+  @PatchMapping("/{id}/status")
+  public ResponseEntity<GenericResponse<EmployeeResponseDto>> updateEmployeeStatus(@PathVariable(value = "id") final Integer id,
+      @RequestParam(value = "isActive") final Boolean isActive) {
     final GenericResponse<EmployeeResponseDto> response = this.service.findById(id);
     if (ObjectUtils.isNotEmpty(response.getBody())) {
-      return ResponseEntity.status(HttpStatus.OK).body(this.service.disabledOrEnabledEmployee(isActive, id));
+      return ResponseEntity.status(HttpStatus.OK).body(this.service.updateEmployeeStatus(isActive, id));
     } else {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
   }
 
-  @DeleteMapping("/deleteEmployee/{id}")
+  @DeleteMapping("/{id}")
   public ResponseEntity<GenericResponse<EmployeeResponseDto>> deleteEmployeeById(@PathVariable(value = "id") final Integer id) {
     final GenericResponse<EmployeeResponseDto> response = this.service.findById(id);
     if (ObjectUtils.isNotEmpty(response.getBody())) {
-      return ResponseEntity.status(HttpStatus.OK).body(this.service.deleteEmployee(id));
+      return ResponseEntity.status(HttpStatus.OK).body(this.service.deleteEmployeeById(id));
     } else {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
