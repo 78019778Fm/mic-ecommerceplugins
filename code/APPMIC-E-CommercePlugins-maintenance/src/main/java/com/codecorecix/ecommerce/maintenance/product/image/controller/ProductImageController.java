@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("api/productImage")
+@RequestMapping("api/products/images")
 @RequiredArgsConstructor
 public class ProductImageController {
 
@@ -47,7 +47,7 @@ public class ProductImageController {
 
   private final ProductFieldsMapper productFieldsMapper;
 
-  @PostMapping("/uploadImageProduct")
+  @PostMapping
   public ResponseEntity<GenericResponse<ProductImageResponseDto>> uploadImage(@RequestParam("file") final MultipartFile file,
       @RequestParam("productId") final Integer productId) {
     try {
@@ -78,7 +78,7 @@ public class ProductImageController {
     }
   }
 
-  @DeleteMapping("/deleteImageProduct/{fileId}")
+  @DeleteMapping("/{fileId}")
   public ResponseEntity<GenericResponse<ProductImageResponseDto>> deleteImage(@PathVariable(name = "fileId") final String fileId) {
     try {
       final ProductImageResponseDto productImageResponseDto = this.productImageService.findByUrlName(fileId);

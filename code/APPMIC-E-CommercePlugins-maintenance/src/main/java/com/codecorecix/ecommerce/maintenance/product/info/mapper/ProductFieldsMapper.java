@@ -12,7 +12,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface ProductFieldsMapper {
 
-  @Mapping(target = "images", ignore = true)
   Product sourceToDestination(final ProductRequestDto source);
 
   @Mapping(target = "categoryName", source = "category.description")

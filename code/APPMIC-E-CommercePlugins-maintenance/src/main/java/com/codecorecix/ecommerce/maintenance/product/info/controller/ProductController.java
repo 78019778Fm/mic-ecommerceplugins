@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -30,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/product")
+@RequestMapping("api/products")
 public class ProductController {
 
   private final ProductService service;
@@ -39,17 +40,17 @@ public class ProductController {
 
   private final ProductDetailService productDetailService;
 
-  @GetMapping("/listProduct")
-  public ResponseEntity<GenericResponse<List<ProductResponseDto>>> listProduct() {
-    return ResponseEntity.status(HttpStatus.OK).body(this.service.listProduct());
+  @GetMapping
+  public ResponseEntity<GenericResponse<List<ProductResponseDto>>> getAllProducts() {
+    return ResponseEntity.status(HttpStatus.OK).body(this.service.getAllProducts());
   }
 
-  @GetMapping("/listActiveProduct")
-  public ResponseEntity<GenericResponse<List<ProductResponseDto>>> listActiveProduct() {
-    return ResponseEntity.status(HttpStatus.OK).body(this.service.listActiveProducts());
+  @GetMapping("/active")
+  public ResponseEntity<GenericResponse<List<ProductResponseDto>>> getAllActiveProducts() {
+    return ResponseEntity.status(HttpStatus.OK).body(this.service.getActiveProducts());
   }
 
-  @GetMapping("/getById/{id}")
+  @GetMapping("/{id}")
   public ResponseEntity<GenericResponse<ProductResponseDto>> getProductById(@PathVariable(value = "id") final Integer id) {
     final GenericResponse<ProductResponseDto> response = this.service.findById(id);
     if (Objects.nonNull(response.getBody())) {
@@ -69,45 +70,45 @@ public class ProductController {
     }
   }
 
-  @PostMapping("/saveProduct")
+  @PostMapping
   public ResponseEntity<GenericResponse<ProductResponseDto>> saveProduct(@RequestBody final ProductRequestDto productRequestDto) {
     MaintenanceUtils.validRequestDto(productRequestDto);
     if (ObjectUtils.isNotEmpty(productRequestDto.getId())) {
       throw new GenericUnprocessableEntityException(GenericResponseConstants.UNPROCESSABLE_ENTITY_EXCEPTION);
     } else {
-      return ResponseEntity.status(HttpStatus.CREATED).body(this.service.saveProduct(productRequestDto));
+      return ResponseEntity.status(HttpStatus.CREATED).body(this.service.save(productRequestDto));
     }
   }
 
-  @PutMapping("/updateProduct/{id}")
+  @PutMapping("/{id}")
   public ResponseEntity<GenericResponse<ProductResponseDto>> updateProduct(@PathVariable(value = "id") final Integer id,
       @RequestBody final ProductRequestDto productRequestDto) {
     final GenericResponse<ProductResponseDto> response = this.service.findById(id);
     if (ObjectUtils.isNotEmpty(response.getBody())) {
       productRequestDto.setId(response.getBody().getId());
       MaintenanceUtils.validRequestDto(productRequestDto);
-      return ResponseEntity.status(HttpStatus.OK).body(this.service.saveProduct(productRequestDto));
+      return ResponseEntity.status(HttpStatus.OK).body(this.service.save(productRequestDto));
     } else {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
   }
 
-  @GetMapping("/disabledOrEnabledProduct/{id}/{isActive}")
-  public ResponseEntity<GenericResponse<ProductResponseDto>> disabledOrEnabledProduct(@PathVariable(value = "id") final Integer id,
-      @PathVariable(value = "isActive") final Boolean isActive) {
+  @PatchMapping("/{id}/status")
+  public ResponseEntity<GenericResponse<ProductResponseDto>> updateProductStatus(@PathVariable(value = "id") final Integer id,
+      @RequestParam(value = "isActive") final Boolean isActive) {
     final GenericResponse<ProductResponseDto> response = this.service.findById(id);
     if (ObjectUtils.isNotEmpty(response.getBody())) {
-      return ResponseEntity.status(HttpStatus.OK).body(this.service.disabledOrEnabledProduct(isActive, id));
+      return ResponseEntity.status(HttpStatus.OK).body(this.service.updateProductStatus(isActive, id));
     } else {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
   }
 
-  @DeleteMapping("/deleteProduct/{id}")
+  @DeleteMapping("/{id}")
   public ResponseEntity<GenericResponse<ProductResponseDto>> deleteProductById(@PathVariable(value = "id") final Integer id) {
     final GenericResponse<ProductResponseDto> response = this.service.findById(id);
     if (ObjectUtils.isNotEmpty(response.getBody())) {
-      return ResponseEntity.status(HttpStatus.OK).body(this.service.deleteProduct(id));
+      return ResponseEntity.status(HttpStatus.OK).body(this.service.deleteProductById(id));
     } else {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }

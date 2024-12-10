@@ -24,6 +24,8 @@ public class GenericResponseConstants {
 
   public static final String UNPROCESSABLE_ENTITY_EXCEPTION = "The request is incorrectly formatted";
 
+  public static final String CONFLICT = "The resource already exists in the database";
+
   public static final String VIEW = "/view";
 
   public static final String DASH = " - ";

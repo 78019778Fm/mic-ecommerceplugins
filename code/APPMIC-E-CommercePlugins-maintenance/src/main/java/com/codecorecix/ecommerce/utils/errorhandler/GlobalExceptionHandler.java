@@ -13,6 +13,7 @@ import com.codecorecix.ecommerce.utils.MaintenanceErrorMessage;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -31,8 +32,13 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(Exception.class)
   @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
   public GenericResponse<Object> exception(final Exception ex) {
-    return new GenericResponse<>(GenericResponseConstants.RPTA_ERROR,
-        StringUtils.joinWith(GenericResponseConstants.DASH, GenericResponseConstants.WRONG_OPERATION), ex.getMessage());
+    return new GenericResponse<>(GenericResponseConstants.RPTA_ERROR, GenericResponseConstants.WRONG_OPERATION, ex.getMessage());
+  }
+
+  @ExceptionHandler(DataIntegrityViolationException.class)
+  @ResponseStatus(code = HttpStatus.CONFLICT)
+  public GenericResponse<Object> dataIntegrityViolationException(final DataIntegrityViolationException ex) {
+    return new GenericResponse<>(GenericResponseConstants.RPTA_ERROR, GenericResponseConstants.WRONG_OPERATION, GenericResponseConstants.CONFLICT);
   }
 
   @ExceptionHandler(MaintenanceException.class)

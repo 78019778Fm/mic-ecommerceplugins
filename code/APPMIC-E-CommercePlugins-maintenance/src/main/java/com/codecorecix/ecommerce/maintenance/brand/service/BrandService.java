@@ -13,14 +13,14 @@ public interface BrandService {
    *
    * @return List of BrandResponseDto.
    */
-  GenericResponse<List<BrandResponseDto>> listBrand();
+  GenericResponse<List<BrandResponseDto>> getAllBrands();
 
   /**
    * Method used to list all active brands.
    *
    * @return List of BrandResponseDto.
    */
-  GenericResponse<List<BrandResponseDto>> listActiveBrands();
+  GenericResponse<List<BrandResponseDto>> getActiveBrands();
 
   /**
    * Method used to save the brands.
@@ -28,7 +28,7 @@ public interface BrandService {
    * @param brandRequestDto The brand request dto.
    * @return List of BrandResponseDto.
    */
-  GenericResponse<BrandResponseDto> saveBrand(final BrandRequestDto brandRequestDto);
+  GenericResponse<BrandResponseDto> save(final BrandRequestDto brandRequestDto);
 
   /**
    * Method used to delete the brand.
@@ -36,15 +36,15 @@ public interface BrandService {
    * @param id The id of the brand.
    * @return List of BrandResponseDto.
    */
-  GenericResponse<BrandResponseDto> deleteBrand(final Integer id);
+  GenericResponse<BrandResponseDto> deleteById(final Integer id);
 
   /**
-   * Method used to desactive or activate the brand.
+   * Method used to update the status of the brand.
    *
    * @param isActive True if is active or false en otherwise.
    * @return List of BrandResponseDto.
    */
-  GenericResponse<BrandResponseDto> disabledOrEnabledBrand(final Boolean isActive, final Integer id);
+  GenericResponse<BrandResponseDto> updateBrandStatus(final Boolean isActive, final Integer id);
 
   /**
    * Method used to find the brand by id.

@@ -26,17 +26,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/productDetail")
+@RequestMapping("api/products/details")
 @RequiredArgsConstructor
 public class ProductDetailController {
 
   private final ProductDetailService productDetailService;
 
-  @GetMapping("/listDetailByProductId/{productId}")
-  public ResponseEntity<GenericResponse<List<ProductDetailResponseDto>>> saveDetail(
+  @GetMapping("/{productId}")
+  public ResponseEntity<GenericResponse<List<ProductDetailResponseDto>>> getDetailByProductId(
       @PathVariable(name = "productId") final Integer productId) {
     try {
-      List<ProductDetailResponseDto> productDetailResponseDto = this.productDetailService.findByProductId(productId);
+      List<ProductDetailResponseDto> productDetailResponseDto = this.productDetailService.getDetailByProductId(productId);
       return ResponseEntity.status(HttpStatus.OK).body(
           GenericUtils.buildGenericResponseSuccess(null, productDetailResponseDto));
     } catch (final Exception e) {
@@ -44,7 +44,7 @@ public class ProductDetailController {
     }
   }
 
-  @PostMapping("/saveDetail")
+  @PostMapping
   public ResponseEntity<GenericResponse<ProductDetailResponseDto>> saveDetail(@RequestBody ProductDetailRequestDto requestDto) {
     try {
       MaintenanceUtils.validRequestDto(requestDto);
@@ -58,7 +58,7 @@ public class ProductDetailController {
     }
   }
 
-  @PutMapping("/updateDetail/{id}")
+  @PutMapping("/{id}")
   public ResponseEntity<GenericResponse<ProductDetailResponseDto>> updateDetail(@PathVariable(value = "id") final Integer id,
       @RequestBody final ProductDetailRequestDto productDetailRequestDto) {
     final ProductDetailResponseDto response = this.productDetailService.findById(id);
@@ -73,8 +73,8 @@ public class ProductDetailController {
     }
   }
 
-  @DeleteMapping("/deleteDetailById/{id}")
-  public ResponseEntity<GenericResponse<ProductDetailResponseDto>> deleteImage(@PathVariable(name = "id") final Integer id) {
+  @DeleteMapping("/{id}")
+  public ResponseEntity<GenericResponse<ProductDetailResponseDto>> deleteDetail(@PathVariable(name = "id") final Integer id) {
     try {
       this.productDetailService.deleteDetail(id);
       return ResponseEntity.status(HttpStatus.OK).body(

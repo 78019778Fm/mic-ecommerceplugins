@@ -45,4 +45,11 @@ public interface ProductImageService {
    * @return a {@code ProductImageResponseDto} containing the information of the found image.
    */
   List<ProductImageResponseDto> findByProductId(final Integer productId);
+
+  /**
+   * Method used to delete the images of the product.
+   *
+   * @param productId The id of the product.
+   */
+  void deleteAllImagesByProductId(final Integer productId);
 }

@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("api/googleDrive")
+@RequestMapping("api/googledrive/images")
 @RequiredArgsConstructor
 public class GoogleDriveController {
 
@@ -42,7 +42,7 @@ public class GoogleDriveController {
 
   private final ProductFieldsMapper productFieldsMapper;
 
-  @PostMapping("/uploadImage")
+  @PostMapping
   public ResponseEntity<GenericResponse<GoogleDriveResponse>> uploadImage(@RequestParam("file") final MultipartFile file) {
     try {
       final Path tempDir = Files.createTempDirectory(StringUtils.EMPTY);
@@ -58,8 +58,8 @@ public class GoogleDriveController {
     }
   }
 
-  @DeleteMapping("/deleteImage/{fileId}")
-  public ResponseEntity<GenericResponse<GoogleDriveResponse>> deleteImage(@PathVariable(name = "fileId") final String fileId) {
+  @DeleteMapping("/{fileId}")
+  public ResponseEntity<GenericResponse<GoogleDriveResponse>> deleteImageByFileId(@PathVariable(name = "fileId") final String fileId) {
     try {
       this.googleDriveService.deleteFile(fileId);
       return ResponseEntity.status(HttpStatus.OK).body(
@@ -70,7 +70,7 @@ public class GoogleDriveController {
     }
   }
 
-  @GetMapping("/getImage/{fileId}")
+  @GetMapping("/{fileId}")
   public ResponseEntity<GenericResponse<GoogleDriveResponse>> getImageByFileId(@PathVariable(name = "fileId") final String fileId) {
     try {
       final GoogleDriveResponse response = this.googleDriveService.findFileByFileId(fileId);

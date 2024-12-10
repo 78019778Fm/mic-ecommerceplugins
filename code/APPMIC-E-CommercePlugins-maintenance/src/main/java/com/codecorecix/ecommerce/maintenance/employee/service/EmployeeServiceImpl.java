@@ -26,12 +26,12 @@ public class EmployeeServiceImpl implements EmployeeService {
   private final EmployeeFieldsMapper mapper;
 
   @Override
-  public GenericResponse<List<EmployeeResponseDto>> listEmployee() {
+  public GenericResponse<List<EmployeeResponseDto>> getAllEmployees() {
     return GenericUtils.buildGenericResponseSuccess(null, this.mapper.toDto(this.repository.findAll()));
   }
 
   @Override
-  public GenericResponse<EmployeeResponseDto> saveEmployee(final EmployeeRequestDto employeeRequestDto, final boolean isUpdated) {
+  public GenericResponse<EmployeeResponseDto> save(final EmployeeRequestDto employeeRequestDto, final boolean isUpdated) {
     final Employee employeeMapped = this.mapper.sourceToDestination(employeeRequestDto);
     if (isUpdated) {
       final Employee employeeBD = this.repository.findById(employeeRequestDto.getId()).orElseThrow();
@@ -47,7 +47,7 @@ public class EmployeeServiceImpl implements EmployeeService {
   }
 
   @Override
-  public GenericResponse<EmployeeResponseDto> deleteEmployee(final Integer id) {
+  public GenericResponse<EmployeeResponseDto> deleteEmployeeById(final Integer id) {
     final Optional<Employee> employee = this.repository.findById(id);
     return employee.map(value -> {
       this.repository.deleteById(id);
@@ -57,7 +57,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
   @Override
   @Transactional
-  public GenericResponse<EmployeeResponseDto> disabledOrEnabledEmployee(final Boolean isActive, final Integer id) {
+  public GenericResponse<EmployeeResponseDto> updateEmployeeStatus(final Boolean isActive, final Integer id) {
     final Optional<Employee> employee = this.repository.findById(id);
     return employee.map(value -> {
       this.repository.disabledOrEnabledEmployee(isActive, id);

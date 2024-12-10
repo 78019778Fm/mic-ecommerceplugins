@@ -5,8 +5,8 @@ import java.util.Optional;
 
 import com.codecorecix.ecommerce.event.entities.Product;
 import com.codecorecix.ecommerce.event.models.ProductInfo;
-import com.codecorecix.ecommerce.maintenance.product.detail.mapper.ProductDetailFieldsMapper;
-import com.codecorecix.ecommerce.maintenance.product.detail.repository.ProductDetailRepository;
+import com.codecorecix.ecommerce.maintenance.product.detail.service.ProductDetailService;
+import com.codecorecix.ecommerce.maintenance.product.image.service.ProductImageService;
 import com.codecorecix.ecommerce.maintenance.product.info.api.dto.request.ProductRequestDto;
 import com.codecorecix.ecommerce.maintenance.product.info.api.dto.response.ProductResponseDto;
 import com.codecorecix.ecommerce.maintenance.product.info.mapper.ProductFieldsMapper;
@@ -15,6 +15,7 @@ import com.codecorecix.ecommerce.maintenance.product.info.utils.ProductConstants
 import com.codecorecix.ecommerce.utils.GenericResponse;
 import com.codecorecix.ecommerce.utils.GenericResponseConstants;
 import com.codecorecix.ecommerce.utils.GenericUtils;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -24,29 +25,29 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
+  private final ProductDetailService productDetailService;
+
+  private final ProductImageService productImageService;
+
   private final ProductRepository productRepository;
-
-  private final ProductDetailRepository productDetailRepository;
-
-  private final ProductDetailFieldsMapper productDetailFieldsMapper;
 
   private final ProductFieldsMapper mapper;
 
   @Override
-  public GenericResponse<List<ProductResponseDto>> listProduct() {
+  public GenericResponse<List<ProductResponseDto>> getAllProducts() {
     return new GenericResponse<>(GenericResponseConstants.RPTA_OK, GenericResponseConstants.CORRECT_OPERATION,
         this.mapper.toDto(this.productRepository.findAll()));
   }
 
   @Override
-  public GenericResponse<List<ProductResponseDto>> listActiveProducts() {
+  public GenericResponse<List<ProductResponseDto>> getActiveProducts() {
     return new GenericResponse<>(GenericResponseConstants.RPTA_OK, GenericResponseConstants.CORRECT_OPERATION,
         this.mapper.toDto(this.productRepository.findByIsActiveIsTrue()));
   }
 
   @Override
   @Transactional
-  public GenericResponse<ProductResponseDto> saveProduct(final ProductRequestDto productRequestDto) {
+  public GenericResponse<ProductResponseDto> save(final ProductRequestDto productRequestDto) {
     final Product productInfo = this.mapper.sourceToDestination(productRequestDto);
     final Product product = this.productRepository.save(productInfo);
     return new GenericResponse<>(GenericResponseConstants.RPTA_OK, GenericResponseConstants.CORRECT_OPERATION,
@@ -54,9 +55,12 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  public GenericResponse<ProductResponseDto> deleteProduct(final Integer id) {
+  @Transactional
+  public GenericResponse<ProductResponseDto> deleteProductById(final Integer id) {
     final Optional<Product> product = this.productRepository.findById(id);
     if (product.isPresent()) {
+      this.productDetailService.deleteAllDetailsByProductId(id);
+      this.productImageService.deleteAllImagesByProductId(id);
       this.productRepository.deleteById(id);
       return new GenericResponse<>(GenericResponseConstants.RPTA_OK, GenericResponseConstants.CORRECT_OPERATION, null);
     } else {
@@ -69,7 +73,7 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   @Transactional
-  public GenericResponse<ProductResponseDto> disabledOrEnabledProduct(final Boolean isActive, final Integer id) {
+  public GenericResponse<ProductResponseDto> updateProductStatus(final Boolean isActive, final Integer id) {
     final Optional<Product> product = this.productRepository.findById(id);
     if (product.isPresent()) {
       this.productRepository.disabledOrEnabledProduct(isActive, id);

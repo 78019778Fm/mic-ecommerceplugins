@@ -27,26 +27,26 @@ public class BrandServiceImpl implements BrandService {
   private final BrandRepository repository;
 
   @Override
-  public GenericResponse<List<BrandResponseDto>> listBrand() {
+  public GenericResponse<List<BrandResponseDto>> getAllBrands() {
     final List<Brand> brands = this.repository.findAll();
     return new GenericResponse<>(GenericResponseConstants.RPTA_OK, GenericResponseConstants.CORRECT_OPERATION, this.mapper.toDto(brands));
   }
 
   @Override
-  public GenericResponse<List<BrandResponseDto>> listActiveBrands() {
+  public GenericResponse<List<BrandResponseDto>> getActiveBrands() {
     final List<Brand> brands = this.repository.findByIsActiveIsTrue();
     return new GenericResponse<>(GenericResponseConstants.RPTA_OK, GenericResponseConstants.CORRECT_OPERATION, this.mapper.toDto(brands));
   }
 
   @Override
-  public GenericResponse<BrandResponseDto> saveBrand(final BrandRequestDto brandRequestDto) {
+  public GenericResponse<BrandResponseDto> save(final BrandRequestDto brandRequestDto) {
     final Brand brand = (this.repository.save(this.mapper.sourceToDestination(brandRequestDto)));
     return new GenericResponse<>(GenericResponseConstants.RPTA_OK, GenericResponseConstants.CORRECT_OPERATION,
         this.mapper.destinationToSource(brand));
   }
 
   @Override
-  public GenericResponse<BrandResponseDto> deleteBrand(final Integer id) {
+  public GenericResponse<BrandResponseDto> deleteById(final Integer id) {
     final Optional<Brand> brand = this.repository.findById(id);
     if (brand.isPresent()) {
       this.repository.deleteById(id);
@@ -60,7 +60,7 @@ public class BrandServiceImpl implements BrandService {
 
   @Override
   @Transactional
-  public GenericResponse<BrandResponseDto> disabledOrEnabledBrand(final Boolean isActive, final Integer id) {
+  public GenericResponse<BrandResponseDto> updateBrandStatus(final Boolean isActive, final Integer id) {
     final Optional<Brand> brandOptional = this.repository.findById(id);
     if (brandOptional.isPresent()) {
       this.repository.disabledOrEnabledBrand(isActive, id);
