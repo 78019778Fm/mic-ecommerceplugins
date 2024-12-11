@@ -18,6 +18,10 @@
 
   <dependencies>
     <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>APPMIC-E-CommercePlugins-common</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
@@ -54,6 +58,7 @@
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
     </dependency>
+    <!--Google Drive -->
     <dependency>
       <groupId>com.google.api-client</groupId>
       <artifactId>google-api-client</artifactId>
@@ -69,10 +74,6 @@
       <artifactId>android-json</artifactId>
       <version>0.0.20131108.vaadin1</version>
       <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>APPMIC-E-CommercePlugins-common</artifactId>
     </dependency>
   </dependencies>
 

@@ -13,7 +13,6 @@ import com.codecorecix.ecommerce.order.status.utils.OrderStatusUtils;
 import com.codecorecix.ecommerce.utils.GenericResponse;
 import com.codecorecix.ecommerce.utils.GenericResponseConstants;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -27,37 +26,23 @@ public class OrderStatusServiceImpl implements OrderStatusService {
   private final OrderStatusFieldsMapper mapper;
 
   @Override
-  public GenericResponse<List<OrderStatusResponseDto>> listStatus() {
+  public GenericResponse<List<OrderStatusResponseDto>> getAllStatus() {
     return new GenericResponse<>(GenericResponseConstants.RPTA_OK, GenericResponseConstants.CORRECT_OPERATION,
         this.mapper.toDto(this.repository.findAll()));
   }
 
   @Override
-  public GenericResponse<OrderStatusResponseDto> saveStatus(final OrderStatusRequestDto orderStatusRequestDto) {
+  public GenericResponse<OrderStatusResponseDto> save(final OrderStatusRequestDto orderStatusRequestDto) {
     final OrderStatus orderStatus = (this.repository.save(this.mapper.sourceToDestination(orderStatusRequestDto)));
     return new GenericResponse<>(GenericResponseConstants.RPTA_OK, GenericResponseConstants.CORRECT_OPERATION,
         this.mapper.destinationToSource(orderStatus));
   }
 
   @Override
-  public GenericResponse<OrderStatusResponseDto> deleteStatus(final Integer id) {
+  public GenericResponse<OrderStatusResponseDto> delete(final Integer id) {
     final Optional<OrderStatus> status = this.repository.findById(id);
     if (status.isPresent()) {
       this.repository.deleteById(status.get().getId());
-      return new GenericResponse<>(GenericResponseConstants.RPTA_OK, GenericResponseConstants.CORRECT_OPERATION, null);
-    } else {
-      return new GenericResponse<>(GenericResponseConstants.RPTA_ERROR,
-          StringUtils.joinWith(GenericResponseConstants.DASH, GenericResponseConstants.INCORRECT_OPERATION, OrderStatusConstants.NO_EXIST),
-          null);
-    }
-  }
-
-  @Override
-  @Transactional
-  public GenericResponse<OrderStatusResponseDto> disabledOrEnabledStatus(final Boolean isActive, final Integer id) {
-    final Optional<OrderStatus> statusOptional = this.repository.findById(id);
-    if (statusOptional.isPresent()) {
-      this.repository.save(new OrderStatus(statusOptional.get().getId(), statusOptional.get().getStatusName(), isActive));
       return new GenericResponse<>(GenericResponseConstants.RPTA_OK, GenericResponseConstants.CORRECT_OPERATION, null);
     } else {
       return new GenericResponse<>(GenericResponseConstants.RPTA_ERROR,

@@ -26,6 +26,8 @@ public class GenericResponseConstants {
 
   public static final String CONFLICT = "The resource already exists in the database";
 
+  public static final String UNAVAILABLE_SERVICE = "The service is not available, please try again later.";
+
   public static final String VIEW = "/view";
 
   public static final String DASH = " - ";

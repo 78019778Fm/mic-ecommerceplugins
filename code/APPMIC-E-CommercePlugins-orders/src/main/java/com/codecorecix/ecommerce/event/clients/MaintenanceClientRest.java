@@ -1,10 +1,13 @@
 package com.codecorecix.ecommerce.event.clients;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.codecorecix.ecommerce.event.models.ProductInfo;
 import com.codecorecix.ecommerce.utils.GenericResponse;
+import com.codecorecix.ecommerce.utils.GenericResponseConstants;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,7 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "APPMIC-E-CommercePlugins-maintenance", url = "http://localhost:9090")
 public interface MaintenanceClientRest {
 
-  @GetMapping("/api/product/checkProducts")
+  @GetMapping("/api/products/checkProducts")
+  @CircuitBreaker(name = "maintenanceService", fallbackMethod = "fallbackCheckProducts")
   GenericResponse<List<ProductInfo>> checkProducts(@RequestParam final List<Integer> ids);
 
+  default GenericResponse<List<ProductInfo>> fallbackCheckProducts(List<Integer> ids, Throwable throwable) {
+    return new GenericResponse<>(GenericResponseConstants.RPTA_ERROR, GenericResponseConstants.UNAVAILABLE_SERVICE,
+        Collections.emptyList());
+  }
 }

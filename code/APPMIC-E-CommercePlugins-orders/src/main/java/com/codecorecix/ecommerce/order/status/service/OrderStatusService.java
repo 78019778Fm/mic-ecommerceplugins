@@ -13,7 +13,7 @@ public interface OrderStatusService {
    *
    * @return List of OrderStatusResponseDto.
    */
-  GenericResponse<List<OrderStatusResponseDto>> listStatus();
+  GenericResponse<List<OrderStatusResponseDto>> getAllStatus();
 
   /**
    * Method used to save the status.
@@ -21,7 +21,7 @@ public interface OrderStatusService {
    * @param orderStatusRequestDto The status request dto.
    * @return List of OrderStatusResponseDto.
    */
-  GenericResponse<OrderStatusResponseDto> saveStatus(final OrderStatusRequestDto orderStatusRequestDto);
+  GenericResponse<OrderStatusResponseDto> save(final OrderStatusRequestDto orderStatusRequestDto);
 
   /**
    * Method used to delete the status.
@@ -29,15 +29,7 @@ public interface OrderStatusService {
    * @param id The id of the status.
    * @return List of OrderStatusResponseDto.
    */
-  GenericResponse<OrderStatusResponseDto> deleteStatus(final Integer id);
-
-  /**
-   * Method used to desactive or activate the status.
-   *
-   * @param isActive True if is active or false en otherwise.
-   * @return List of OrderStatusResponseDto.
-   */
-  GenericResponse<OrderStatusResponseDto> disabledOrEnabledStatus(final Boolean isActive, final Integer id);
+  GenericResponse<OrderStatusResponseDto> delete(final Integer id);
 
   /**
    * Method used to find the status by id.

@@ -3,12 +3,13 @@ package com.codecorecix.ecommerce.order.status.controller;
 import java.util.List;
 import java.util.Objects;
 
+import com.codecorecix.ecommerce.exception.GenericUnprocessableEntityException;
 import com.codecorecix.ecommerce.order.status.api.dto.request.OrderStatusRequestDto;
 import com.codecorecix.ecommerce.order.status.api.dto.response.OrderStatusResponseDto;
 import com.codecorecix.ecommerce.order.status.service.OrderStatusService;
 import com.codecorecix.ecommerce.order.status.utils.OrderStatusConstants;
 import com.codecorecix.ecommerce.utils.GenericResponse;
-import com.codecorecix.ecommerce.exception.GenericUnprocessableEntityException;
+import com.codecorecix.ecommerce.utils.OrdersUtils;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,18 +26,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/orderStatus")
+@RequestMapping("api/orders/status")
 @RequiredArgsConstructor
 public class OrderStatusController {
 
   private final OrderStatusService service;
 
-  @GetMapping("/listStatus")
-  public ResponseEntity<GenericResponse<List<OrderStatusResponseDto>>> listStatus() {
-    return ResponseEntity.status(HttpStatus.OK).body(this.service.listStatus());
+  @GetMapping
+  public ResponseEntity<GenericResponse<List<OrderStatusResponseDto>>> getAllStatus() {
+    return ResponseEntity.status(HttpStatus.OK).body(this.service.getAllStatus());
   }
 
-  @GetMapping("/getById/{id}")
+  @GetMapping("/{id}")
   public ResponseEntity<GenericResponse<OrderStatusResponseDto>> getStatusById(@PathVariable(value = "id") final Integer id) {
     final GenericResponse<OrderStatusResponseDto> response = this.service.findById(id);
     if (Objects.nonNull(response.getBody())) {
@@ -46,44 +47,35 @@ public class OrderStatusController {
     }
   }
 
-  @PostMapping("/saveStatus")
+  @PostMapping
   public ResponseEntity<GenericResponse<OrderStatusResponseDto>> saveStatus(
-      @Valid @RequestBody final OrderStatusRequestDto orderStatusRequestDto) {
+      @RequestBody final OrderStatusRequestDto orderStatusRequestDto) {
     if (ObjectUtils.isNotEmpty(orderStatusRequestDto.getId())) {
       throw new GenericUnprocessableEntityException(OrderStatusConstants.UNPROCESSABLE_ENTITY_EXCEPTION);
     } else {
-      return ResponseEntity.status(HttpStatus.CREATED).body(this.service.saveStatus(orderStatusRequestDto));
+      OrdersUtils.validRequestDto(orderStatusRequestDto);
+      return ResponseEntity.status(HttpStatus.CREATED).body(this.service.save(orderStatusRequestDto));
     }
   }
 
-  @PutMapping("/updateStatus/{id}")
+  @PutMapping("/{id}")
   public ResponseEntity<GenericResponse<OrderStatusResponseDto>> updateStatus(@Valid @PathVariable(value = "id") final Integer id,
-      @Valid @RequestBody final OrderStatusRequestDto orderStatusRequestDto) {
+      @RequestBody final OrderStatusRequestDto orderStatusRequestDto) {
     final GenericResponse<OrderStatusResponseDto> response = this.service.findById(id);
     if (ObjectUtils.isNotEmpty(response.getBody())) {
       orderStatusRequestDto.setId(response.getBody().getId());
-      return ResponseEntity.status(HttpStatus.OK).body(this.service.saveStatus(orderStatusRequestDto));
+      return ResponseEntity.status(HttpStatus.OK).body(this.service.save(orderStatusRequestDto));
     } else {
+      OrdersUtils.validRequestDto(orderStatusRequestDto);
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
   }
 
-  @DeleteMapping("/deleteStatus/{id}")
+  @DeleteMapping("/{id}")
   public ResponseEntity<GenericResponse<OrderStatusResponseDto>> deleteStatusById(@PathVariable(value = "id") final Integer id) {
     final GenericResponse<OrderStatusResponseDto> response = this.service.findById(id);
     if (ObjectUtils.isNotEmpty(response.getBody())) {
-      return ResponseEntity.status(HttpStatus.OK).body(this.service.deleteStatus(response.getBody().getId()));
-    } else {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-    }
-  }
-
-  @GetMapping("/disabledOrEnabledStatus/{id}/{isActive}")
-  public ResponseEntity<GenericResponse<OrderStatusResponseDto>> disabledOrEnabledStatus(@PathVariable(value = "id") final Integer id,
-      @PathVariable(value = "isActive") final Boolean isActive) {
-    final GenericResponse<OrderStatusResponseDto> response = this.service.findById(id);
-    if (ObjectUtils.isNotEmpty(response.getBody())) {
-      return ResponseEntity.status(HttpStatus.OK).body(this.service.disabledOrEnabledStatus(isActive, id));
+      return ResponseEntity.status(HttpStatus.OK).body(this.service.delete(response.getBody().getId()));
     } else {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }

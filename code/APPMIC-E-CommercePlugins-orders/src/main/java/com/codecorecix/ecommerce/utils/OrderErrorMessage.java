@@ -1,0 +1,14 @@
+package com.codecorecix.ecommerce.utils;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
+public enum OrderErrorMessage {
+  ERROR_RESOURCE_NOT_AVAILABLE(404, "The order status ID does not exist in the database"),
+  ERROR_INTERNAL(500, "Internal Server Error");
+  private final Integer errorCode;
+
+  private final String errorMessage;
+}

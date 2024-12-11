@@ -11,4 +11,6 @@ public class OrderConstants {
   public static final String NO_EXIST_PRODUCT_ID = "The product does not exist in the database, check the request and try again";
 
   public static final String UNPROCESSABLE_ENTITY_EXCEPTION = "The request is incorrectly formatted";
+
+  public static final String UNAVAILABLE_SERVICE_MAINTENANCE = "Could not verify products. Remote service not available";
 }
