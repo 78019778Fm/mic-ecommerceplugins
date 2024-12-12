@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "3c517438-06c1-48f8-b6aa-12a98ef16205",
 		"name": "APPMIC-E-CommercePlugins-orders",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "9753857",
 		"_collection_link": "https://orange-space-3640.postman.co/workspace/APPMIC-E-CommercePlugins~1c50689a-d05f-493d-854e-1ce929da7564/collection/9753857-3c517438-06c1-48f8-b6aa-12a98ef16205?action=share&source=collection_link&creator=9753857"
 	},
@@ -14,31 +14,56 @@
 					"name": "Status",
 					"item": [
 						{
-							"name": "Save Order Status",
+							"name": "Guardar Estado",
 							"request": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"statusName\": \"Atendida\",\r\n    \"isActive\": false\r\n}",
+									"raw": "{\r\n    \"statusName\": null,\r\n    \"isActive\": false\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
 										}
 									}
 								},
-								"url": {
-									"raw": "localhost:9091/api/orderStatus/saveStatus",
-									"host": [
-										"localhost"
-									],
-									"port": "9091",
-									"path": [
-										"api",
-										"orderStatus",
-										"saveStatus"
-									]
-								}
+								"url": "{{base_url}}/{{status_endpoint}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Listar Estados",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{base_url}}/{{status_endpoint}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Estado",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"statusName\": \"Atendida\",\r\n    \"isActive\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{base_url}}/{{status_endpoint}}/1"
+							},
+							"response": []
+						},
+						{
+							"name": "Eliminar Estado",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{base_url}}/{{status_endpoint}}/1"
 							},
 							"response": []
 						}
@@ -48,31 +73,20 @@
 					"name": "Info",
 					"item": [
 						{
-							"name": "Save Order",
+							"name": "Guardar Orden",
 							"request": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"customerId\": 1,\r\n    \"employeeId\": 1,\r\n    \"orderStatus\": {\r\n        \"id\": 1\r\n    },\r\n    \"totalAmount\": 429.30,\r\n    \"orderNotes\": \"El pedido debe ser enviado con cuidado.\",\r\n    \"orderDetails\": [\r\n        {\r\n            \"productId\": 1,\r\n            \"quantity\": 1,\r\n            \"unitPrice\": 429.30,\r\n            \"totalPrice\": 429.30\r\n        }\r\n    ]\r\n}",
+									"raw": "{\r\n    \"customerId\": 1,\r\n    \"employeeId\": 1,\r\n    \"orderStatus\": {\r\n        \"id\": 1\r\n    },\r\n    \"totalAmount\": 429.30,\r\n    \"orderNotes\": \"El pedido debe ser enviado con cuidado\",\r\n    \"orderDetails\": [\r\n        {\r\n            \"productId\": null,\r\n            \"quantity\": 1,\r\n            \"unitPrice\": 429.30,\r\n            \"totalPrice\": 429.30\r\n        }\r\n    ]\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
 										}
 									}
 								},
-								"url": {
-									"raw": "localhost:9091/api/order/saveOrder",
-									"host": [
-										"localhost"
-									],
-									"port": "9091",
-									"path": [
-										"api",
-										"order",
-										"saveOrder"
-									]
-								}
+								"url": "{{base_url}}/{{orders_enpoint}}"
 							},
 							"response": []
 						}
