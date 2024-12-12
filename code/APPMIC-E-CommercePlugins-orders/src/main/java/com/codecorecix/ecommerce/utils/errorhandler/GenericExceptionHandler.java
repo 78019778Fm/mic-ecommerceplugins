@@ -55,6 +55,7 @@ public class GenericExceptionHandler {
     OrderErrorMessage errorMessage = ex.getErrorMessage();
     HttpStatus status = switch (errorMessage) {
       case ERROR_RESOURCE_NOT_AVAILABLE -> HttpStatus.CONFLICT;
+      case SERVICE_PRODUCTS_NOT_AVAILABLE -> HttpStatus.SERVICE_UNAVAILABLE;
       case ERROR_INTERNAL -> HttpStatus.INTERNAL_SERVER_ERROR;
     };
     return new ResponseEntity<>(new GenericResponse<>(GenericResponseConstants.RPTA_ERROR, GenericResponseConstants.WRONG_OPERATION,

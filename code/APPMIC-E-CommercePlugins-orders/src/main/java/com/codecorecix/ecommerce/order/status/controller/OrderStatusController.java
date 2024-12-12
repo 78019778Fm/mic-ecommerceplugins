@@ -11,7 +11,6 @@ import com.codecorecix.ecommerce.order.status.utils.OrderStatusConstants;
 import com.codecorecix.ecommerce.utils.GenericResponse;
 import com.codecorecix.ecommerce.utils.OrdersUtils;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.http.HttpStatus;
@@ -59,7 +58,7 @@ public class OrderStatusController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<GenericResponse<OrderStatusResponseDto>> updateStatus(@Valid @PathVariable(value = "id") final Integer id,
+  public ResponseEntity<GenericResponse<OrderStatusResponseDto>> updateStatus(@PathVariable(value = "id") final Integer id,
       @RequestBody final OrderStatusRequestDto orderStatusRequestDto) {
     final GenericResponse<OrderStatusResponseDto> response = this.service.findById(id);
     if (ObjectUtils.isNotEmpty(response.getBody())) {

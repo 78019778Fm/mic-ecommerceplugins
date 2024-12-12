@@ -7,7 +7,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum OrderErrorMessage {
   ERROR_RESOURCE_NOT_AVAILABLE(404, "The order status ID does not exist in the database"),
-  ERROR_INTERNAL(500, "Internal Server Error");
+  ERROR_INTERNAL(500, "Internal Server Error"),
+  SERVICE_PRODUCTS_NOT_AVAILABLE(503, "The product stock could not be verified, the service is not available");
+
   private final Integer errorCode;
 
   private final String errorMessage;
