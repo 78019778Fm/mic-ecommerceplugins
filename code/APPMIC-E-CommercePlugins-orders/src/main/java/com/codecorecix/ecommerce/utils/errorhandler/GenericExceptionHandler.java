@@ -51,7 +51,7 @@ public class GenericExceptionHandler {
   }
 
   @ExceptionHandler(OrderException.class)
-  public ResponseEntity<GenericResponse<Object>> handleMaintenanceException(final OrderException ex) {
+  public ResponseEntity<GenericResponse<Object>> handleOrderException(final OrderException ex) {
     OrderErrorMessage errorMessage = ex.getErrorMessage();
     HttpStatus status = switch (errorMessage) {
       case ERROR_RESOURCE_NOT_AVAILABLE -> HttpStatus.CONFLICT;

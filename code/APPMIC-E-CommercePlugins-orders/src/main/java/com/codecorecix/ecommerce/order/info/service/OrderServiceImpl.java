@@ -20,7 +20,6 @@ import com.codecorecix.ecommerce.utils.GenericResponseConstants;
 import com.codecorecix.ecommerce.utils.OrderErrorMessage;
 
 import feign.FeignException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -39,7 +38,6 @@ public class OrderServiceImpl implements OrderService {
   private final OrderStatusService orderStatusService;
 
   @Override
-  @Transactional
   public GenericResponse<OrderResponseDto> saveOrder(final OrderRequestDto orderRequestDto) {
     try {
       final Order orderInfo = this.orderFieldsMapper.sourceToDestination(orderRequestDto);
