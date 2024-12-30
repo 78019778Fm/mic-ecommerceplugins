@@ -13,4 +13,5 @@ public class OrderConstants {
   public static final String UNPROCESSABLE_ENTITY_EXCEPTION = "The request is incorrectly formatted";
 
   public static final String UNAVAILABLE_SERVICE_MAINTENANCE = "Could not verify products. Remote service not available";
+
 }

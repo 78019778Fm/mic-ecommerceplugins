@@ -1,6 +1,8 @@
 package com.codecorecix.ecommerce.order.info.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 import com.codecorecix.ecommerce.event.entities.Order;
 import com.codecorecix.ecommerce.exceptions.OrderException;
@@ -13,11 +15,13 @@ import com.codecorecix.ecommerce.order.status.api.dto.response.OrderStatusRespon
 import com.codecorecix.ecommerce.order.status.service.OrderStatusService;
 import com.codecorecix.ecommerce.utils.GenericResponse;
 import com.codecorecix.ecommerce.utils.GenericResponseConstants;
+import com.codecorecix.ecommerce.utils.GenericUtils;
 import com.codecorecix.ecommerce.utils.OrderErrorMessage;
 
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,15 +47,27 @@ public class OrderServiceImpl implements OrderService {
       final GenericResponse<OrderStatusResponseDto> findStatusById =
           this.orderStatusService.findById(orderRequestDto.getOrderStatus().getId());
       if (findStatusById.getRpta().equals(-1)) {
-        throw new OrderException(OrderErrorMessage.ERROR_RESOURCE_NOT_AVAILABLE);
+        throw new OrderException(OrderErrorMessage.ERROR_RESOURCE_STATUS_NOT_AVAILABLE);
       }
       final Order orderBD = this.orderRepository.save(orderInfo);
       this.orderDetailService.saveOrderDetails(orderRequestDto.getOrderDetails(), orderBD.getId());
-      final OrderResponseDto orderResponseDto =
-          this.orderFieldsMapper.destinationToSource(orderBD, findStatusById.getBody().getStatusName());
+      final OrderResponseDto orderResponseDto = this.orderFieldsMapper.destinationToSource(orderBD);
       return new GenericResponse<>(GenericResponseConstants.RPTA_OK, GenericResponseConstants.CORRECT_OPERATION, orderResponseDto);
     } catch (final FeignException e) {
       return new GenericResponse<>(GenericResponseConstants.RPTA_ERROR, OrderConstants.UNAVAILABLE_SERVICE_MAINTENANCE, null);
     }
+  }
+
+  public GenericResponse<List<OrderResponseDto>> getAllOrders() {
+    final List<Order> orders = this.orderRepository.findAll();
+    return new GenericResponse<>(GenericResponseConstants.RPTA_OK, GenericResponseConstants.CORRECT_OPERATION,
+        this.orderFieldsMapper.toDto(orders));
+  }
+
+  public GenericResponse<OrderResponseDto> getOrderById(final Long orderId) {
+    final Optional<Order> order = this.orderRepository.findById(Math.toIntExact(orderId));
+    return order.map(
+            value -> GenericUtils.buildGenericResponseSuccess(StringUtils.EMPTY, this.orderFieldsMapper.destinationToSource(value)))
+        .orElseGet(() -> GenericUtils.buildGenericResponseError(StringUtils.EMPTY, null));
   }
 }
