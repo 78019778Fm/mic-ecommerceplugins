@@ -100,11 +100,20 @@
 							"response": []
 						},
 						{
-							"name": "Encontrar por ID",
+							"name": "Encontrar por OrderId",
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": "{{base_url}}/{{orders_enpoint}}/1"
+							},
+							"response": []
+						},
+						{
+							"name": "Listar Detalles por OrderId",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{base_url}}/{{orders_details_endpoint}}/1"
 							},
 							"response": []
 						}

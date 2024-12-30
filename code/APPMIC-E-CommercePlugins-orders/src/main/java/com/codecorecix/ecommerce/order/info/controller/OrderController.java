@@ -11,7 +11,6 @@ import com.codecorecix.ecommerce.order.info.utils.OrderConstants;
 import com.codecorecix.ecommerce.utils.GenericResponse;
 import com.codecorecix.ecommerce.utils.OrdersUtils;
 
-import io.github.resilience4j.springboot3.retry.autoconfigure.RetryAutoConfiguration;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.http.HttpStatus;
@@ -29,8 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderController {
 
   private final OrderService service;
-
-  private final RetryAutoConfiguration retryAutoConfiguration;
 
   @PostMapping
   public ResponseEntity<GenericResponse<OrderResponseDto>> saveOrder(@RequestBody final OrderRequestDto orderRequestDto) {
