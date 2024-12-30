@@ -20,7 +20,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"statusName\": null,\r\n    \"isActive\": false\r\n}",
+									"raw": "{\r\n    \"statusName\": \"Pendiente\",\r\n    \"isActive\": true\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -47,14 +47,14 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"statusName\": \"Atendida\",\r\n    \"isActive\": true\r\n}",
+									"raw": "{\r\n    \"statusName\": \"Procesado\",\r\n    \"isActive\": true\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
 										}
 									}
 								},
-								"url": "{{base_url}}/{{status_endpoint}}/1"
+								"url": "{{base_url}}/{{status_endpoint}}/2"
 							},
 							"response": []
 						},
@@ -79,7 +79,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"customerId\": 1,\r\n    \"employeeId\": 1,\r\n    \"orderStatus\": {\r\n        \"id\": 1\r\n    },\r\n    \"totalAmount\": 429.30,\r\n    \"orderNotes\": \"El pedido debe ser enviado con cuidado\",\r\n    \"orderDetails\": [\r\n        {\r\n            \"productId\": null,\r\n            \"quantity\": 1,\r\n            \"unitPrice\": 429.30,\r\n            \"totalPrice\": 429.30\r\n        }\r\n    ]\r\n}",
+									"raw": "{\r\n    \"customerId\": 1,\r\n    \"employeeId\": 1,\r\n    \"orderStatus\": {\r\n        \"id\": 1\r\n    },\r\n    \"totalAmount\": 429.30,\r\n    \"orderNotes\": \"El pedido debe ser enviado con cuidado\",\r\n    \"orderDetails\": [\r\n        {\r\n            \"productId\": 1,\r\n            \"quantity\": 1,\r\n            \"unitPrice\": 429.30,\r\n            \"totalPrice\": 429.30\r\n        }\r\n    ]\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -87,6 +87,24 @@
 									}
 								},
 								"url": "{{base_url}}/{{orders_enpoint}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Listar Ordenes",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{base_url}}/{{orders_enpoint}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Encontrar por ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{base_url}}/{{orders_enpoint}}/1"
 							},
 							"response": []
 						}
