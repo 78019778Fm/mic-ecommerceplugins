@@ -28,6 +28,7 @@
     <module>APPMIC-E-CommercePlugins-reports</module>
     <module>APPMIC-E-CommercePlugins-returns</module>
     <module>APPMIC-E-CommercePlugins-tracking</module>
+    <module>APPMIC-E-CommercePlugins-gateway</module>
   </modules>
 
   <scm>

@@ -48,7 +48,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         final OrderDetail orderDetailEntity = this.orderDetailFieldsMapper.toEntity(orderDetail, orderId);
         orderDetails.add(orderDetailEntity);
       }
-      orderDetailRepository.saveAll(orderDetails);
+      this.orderDetailRepository.saveAll(orderDetails);
     } catch (final OrderException e) {
       log.info(e.getMessage());
       throw new OrderException(e.getErrorMessage());
