@@ -6,12 +6,12 @@ spring:
           - id: APPMIC-E-CommercePlugins-maintenance
             uri: lb://APPMIC-E-CommercePlugins-maintenance
             predicates:
-              - Path=/api/maintenance/**
+              - Path=/maintenance/**
             filters:
-              - StripPrefix=2
+              - StripPrefix=1
           - id: APPMIC-E-CommercePlugins-orders
             uri: lb://APPMIC-E-CommercePlugins-orders
             predicates:
-              - Path=/api/maintenance/**
+              - Path=/orders/**
             filters:
-              - StripPrefix=2
+              - StripPrefix=1
