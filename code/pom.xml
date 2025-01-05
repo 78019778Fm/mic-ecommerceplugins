@@ -144,17 +144,17 @@
       <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-kubernetes-client</artifactId>
-        <version>3.2.0</version>
+        <version>3.1.3</version>
       </dependency>
       <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-kubernetes-client-config</artifactId>
-        <version>3.2.0</version>
+        <version>3.1.3</version>
       </dependency>
       <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-kubernetes-client-loadbalancer</artifactId>
-        <version>3.2.0</version>
+        <version>3.1.3</version>
       </dependency>
       <dependency>
         <groupId>org.springdoc</groupId>
