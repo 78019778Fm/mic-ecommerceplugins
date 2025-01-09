@@ -1,6 +1,8 @@
 package com.codecorecix.ecommerce.maintenance.brand.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import com.codecorecix.ecommerce.exception.GenericUnprocessableEntityException;
@@ -13,6 +15,9 @@ import com.codecorecix.ecommerce.utils.MaintenanceUtils;
 
 import jakarta.validation.Valid;
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,8 +37,14 @@ public class BrandController {
 
   private final BrandService service;
 
-  public BrandController(final BrandService service) {
+  private final ApplicationContext context;
+
+  private final Environment environment;
+
+  public BrandController(BrandService service, ApplicationContext context, Environment environment) {
     this.service = service;
+    this.context = context;
+    this.environment = environment;
   }
 
   @GetMapping
@@ -98,5 +109,18 @@ public class BrandController {
     } else {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
+  }
+
+  @GetMapping("/crash")
+  public void crash() {
+    ((ConfigurableApplicationContext) context).close();
+  }
+
+  @GetMapping("/test-load-balancer")
+  public ResponseEntity<Object> testLoadBalancer() {
+    Map<String, Object> body = new HashMap<>();
+    body.put("brands", this.service.getAllBrands().getBody());
+    body.put("pod_info", environment.getProperty("MY_POD_NAME") + ": " + environment.getProperty("MY_POD_IP"));
+    return ResponseEntity.status(HttpStatus.OK).body(body);
   }
 }

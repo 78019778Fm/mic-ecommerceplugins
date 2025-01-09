@@ -1,8 +1,8 @@
 package com.codecorecix.ecommerce.maintenance.drive.service;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.Objects;
@@ -24,6 +24,7 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -87,17 +88,18 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
   }
 
   private Drive createDriveService() {
-    final InputStream in = GoogleDriveService.class.getResourceAsStream(this.maintenanceConfigBean.getCredentialsPath());
-    if (Objects.isNull(in)) {
-      throw new MaintenanceException(MaintenanceErrorMessage.ERROR_RESOURCE_NOT_FOUND);
-    }
-    GoogleCredential credential;
     try {
-      credential = GoogleCredential.fromStream(in).createScoped(Collections.singletonList(DriveScopes.DRIVE));
+      // From an ENV of Kubernetes
+      final String credentialsPath = System.getenv("GOOGLE_APPLICATION_CREDENTIALS");
+      if (Objects.isNull(credentialsPath) || ObjectUtils.isEmpty(credentialsPath)) {
+        throw new MaintenanceException(MaintenanceErrorMessage.ERROR_RESOURCE_NOT_FOUND);
+      }
+      final GoogleCredential credential =
+          GoogleCredential.fromStream(new FileInputStream(credentialsPath)).createScoped(Collections.singletonList(DriveScopes.DRIVE));
       return new Drive.Builder(GoogleNetHttpTransport.newTrustedTransport(), JSON_FACTORY, credential).build();
-    } catch (IOException e) {
+    } catch (final IOException e) {
       throw new MaintenanceException(MaintenanceErrorMessage.ERROR_INTERNAL);
-    } catch (GeneralSecurityException e) {
+    } catch (final GeneralSecurityException e) {
       throw new MaintenanceException(MaintenanceErrorMessage.ERROR_SECURITY_GOOGLE_DRIVE);
     }
   }
