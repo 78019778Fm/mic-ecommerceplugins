@@ -1,0 +1,68 @@
+{
+	"info": {
+		"_postman_id": "f6626a91-7520-4b9a-88ce-a7327ae73157",
+		"name": "APPMIC-E-CommercePlugins-gateway",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "9753857",
+		"_collection_link": "https://orange-space-3640.postman.co/workspace/APPMIC-E-CommercePlugins~1c50689a-d05f-493d-854e-1ce929da7564/collection/9753857-f6626a91-7520-4b9a-88ce-a7327ae73157?action=share&source=collection_link&creator=9753857"
+	},
+	"item": [
+		{
+			"name": "Maintenance",
+			"item": [
+				{
+					"name": "Categorías",
+					"item": [
+						{
+							"name": "Listar Categorías",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{base_url}}/{{categories_endpoint}}"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Marcas",
+					"item": [
+						{
+							"name": "Listar Marcas - LoadBalancer",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"connection": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{base_url}}/{{brands_endpoint}}/test-load-balancer"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "Estados",
+					"item": [
+						{
+							"name": "Listar Estados",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{base_url}}/{{status_endpoint}}"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -121,6 +121,7 @@ public class BrandController {
     Map<String, Object> body = new HashMap<>();
     body.put("brands", this.service.getAllBrands().getBody());
     body.put("pod_info", environment.getProperty("MY_POD_NAME") + ": " + environment.getProperty("MY_POD_IP"));
+    body.put("texto", environment.getProperty("config.texto"));
     return ResponseEntity.status(HttpStatus.OK).body(body);
   }
 }
