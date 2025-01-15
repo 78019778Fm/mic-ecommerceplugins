@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.3.2</version>
+    <version>3.3.7</version>
     <relativePath />
   </parent>
 
@@ -43,7 +43,8 @@
     <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
     <org.lombok.version>1.18.30</org.lombok.version>
     <github-url>https://github.com/Alexander-FM/mic-ecommerceplugins</github-url>
-    <spring-cloud.version>2023.0.3</spring-cloud.version>
+    <spring-cloud.version>2023.0.5</spring-cloud.version>
+    <spring.boot.version>3.3.7</spring.boot.version>
   </properties>
 
   <dependencyManagement>
@@ -91,28 +92,23 @@
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-web</artifactId>
-        <version>3.3.1</version>
+        <version>${spring.boot.version}</version>
       </dependency>
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-test</artifactId>
-        <version>3.3.1</version>
+        <version>${spring.boot.version}</version>
         <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-data-jpa</artifactId>
-        <version>3.3.1</version>
+        <version>${spring.boot.version}</version>
       </dependency>
       <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-web</artifactId>
-        <version>6.1.10</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-starter-openfeign</artifactId>
-        <version>4.1.0</version>
+        <version>6.1.16</version>
       </dependency>
       <dependency>
         <groupId>org.hibernate.validator</groupId>
@@ -140,26 +136,27 @@
         <artifactId>mysql-connector-j</artifactId>
         <version>8.2.0</version>
       </dependency>
+      <!-- Spring Cloud Open Feign -->
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-openfeign</artifactId>
+        <version>4.1.4</version>
+      </dependency>
       <!-- Spring Cloud Kubernetes -->
       <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-kubernetes-client</artifactId>
-        <version>3.1.3</version>
+        <version>3.1.5</version>
       </dependency>
       <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-kubernetes-client-config</artifactId>
-        <version>3.1.3</version>
+        <version>3.1.5</version>
       </dependency>
       <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-kubernetes-client-loadbalancer</artifactId>
-        <version>3.1.3</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springdoc</groupId>
-        <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-        <version>2.6.0</version>
+        <version>3.1.5</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
