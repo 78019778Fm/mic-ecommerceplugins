@@ -12,7 +12,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "APPMIC-E-CommercePlugins-maintenance")
+@FeignClient(name = "appmic-e-commerceplugins-maintenance")
 public interface MaintenanceClientRest {
 
   @GetMapping("/api/products/checkProducts")
