@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appmic-e-commerceplugins-auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: appmic-e-commerceplugins-auth
+  template:
+    metadata:
+      labels:
+        role: appmic-e-commerceplugins-auth
+    spec:
+      containers:
+        - image: alexanderpe/appmic-e-commerceplugins-auth:latest
+          name: appmic-e-commerceplugins-auth
+          ports:
+            - containerPort: 9000
+          env:
+            - name: LB_MAINTENANCE_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: appmic-e-commerceplugins-maintenance
+                  key: lb_maintenance_uri
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: appmic-e-commerceplugins-auth
+spec:
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 9000
+      targetPort: 9000
+  selector:
+    role: appmic-e-commerceplugins-auth

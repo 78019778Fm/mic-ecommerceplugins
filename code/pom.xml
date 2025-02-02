@@ -29,6 +29,7 @@
     <module>APPMIC-E-CommercePlugins-returns</module>
     <module>APPMIC-E-CommercePlugins-tracking</module>
     <module>APPMIC-E-CommercePlugins-gateway</module>
+    <module>APPMIC-E-CommercePlugins-auth</module>
   </modules>
 
   <scm>
@@ -87,6 +88,11 @@
       <dependency>
         <groupId>${project.groupId}</groupId>
         <artifactId>APPMIC-E-CommercePlugins-gateway</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>APPMIC-E-CommercePlugins-auth</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

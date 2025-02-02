@@ -3,6 +3,8 @@ kind: ConfigMap
 metadata:
   name: appmic-e-commerceplugins-maintenance
 data:
+  lb_auth_issuer_uri: "http://127.0.0.1:41215"
+  lb_maintenance_uri: "http://127.0.0.1:45819"
   port: "9090"
   db_host: "mysql:3306"
   database: "maintenance_service"
