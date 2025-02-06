@@ -1,4 +1,4 @@
-package com.codecorecix.ecommerce.maintenance.user.utils;
+package com.codecorecix.ecommerce.utils;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -32,9 +32,10 @@ public class SecurityConfig {
         .sessionManagement(sessionManagement ->
             sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         )
-        .oauth2Login(oauth2Login ->
-            oauth2Login.loginPage("/oauth/authorization/appmic-e-commerceplugins-maintenance-client")
-        )
+        //.oauth2Login(oauth2Login ->
+        //    oauth2Login.loginPage("/oauth/authorization/maintenance-client")
+        //)
+        .oauth2Login(Customizer.withDefaults())
         .oauth2Client(Customizer.withDefaults())
         .oauth2ResourceServer(oAuth2 -> oAuth2.jwt(Customizer.withDefaults()));
     return http.build();

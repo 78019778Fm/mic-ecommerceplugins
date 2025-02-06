@@ -4,6 +4,7 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.time.Duration;
 import java.util.UUID;
 
 import com.nimbusds.jose.jwk.JWKSet;
@@ -22,6 +23,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -38,6 +40,7 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
+import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
@@ -63,12 +66,23 @@ public class SecurityConfig {
         .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
         .with(authorizationServerConfigurer, authorizationServer -> authorizationServer.oidc(Customizer.withDefaults()))
         .authenticationManager(authenticationManager())
+        .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+        //        .oauth2ResourceServer(oauth2 -> oauth2
+        //            .jwt(jwt -> jwt
+        //                .jwtAuthenticationConverter(myConverter())
+        //            )
+        //        )
         .exceptionHandling(exceptions -> exceptions
             .defaultAuthenticationEntryPointFor(
                 new LoginUrlAuthenticationEntryPoint("/login"),
                 new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
             )
         );
+
+    //    http
+    //        .exceptionHandling(exceptions -> exceptions
+    //            .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
+    //        );
     return http.build();
   }
 
@@ -78,8 +92,7 @@ public class SecurityConfig {
       throws Exception {
     http
         .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
-        .httpBasic(Customizer.withDefaults())
-        .formLogin(Customizer.withDefaults());
+        .formLogin(Customizer.withDefaults()).csrf(AbstractHttpConfigurer::disable);
 
     return http.build();
   }
@@ -104,12 +117,14 @@ public class SecurityConfig {
         .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
         .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
         .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-        .redirectUri(environment.getProperty("LB_MAINTENANCE_URI") + "/login/oauth2/code/appmic-e-commerceplugins-maintenance-client")
-        .redirectUri(environment.getProperty("LB_MAINTENANCE_URI") + "/api/users/authorized")
+        .redirectUri(environment.getProperty("LB_MAINTENANCE_URI", "http://127.0.0.1:9090") + "/api/users/authorized")
+        .redirectUri(environment.getProperty("LB_MAINTENANCE_URI", "http://127.0.0.1:9090")
+            + "/login/oauth2/code/appmic-e-commerceplugins-maintenance-client")
+        .tokenSettings(TokenSettings.builder().accessTokenTimeToLive(Duration.ofHours(1)).build())
         .scope(OidcScopes.OPENID)
         .scope("read")
         .scope("write")
-        .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
+        .clientSettings(ClientSettings.builder().requireAuthorizationConsent(false).build())
         .build();
 
     return new InMemoryRegisteredClientRepository(oidcClient);

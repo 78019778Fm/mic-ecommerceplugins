@@ -3,7 +3,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${LB_AUTH_ISSUER_URI:http://127.0.0.1:9000}
+          issuer-uri: ${LB_AUTH_ISSUER_URI:http://127.0.0.1:9001}
       client:
         registration:
           appmic-e-commerceplugins-maintenance-client:
@@ -17,4 +17,4 @@ spring:
             client-name: appmic-e-commerceplugins-maintenance-client
         provider:
           spring:
-            issuer-uri: ${LB_AUTH_ISSUER_URI:http://127.0.0.1:9000}
+            issuer-uri: ${LB_AUTH_ISSUER_URI:http://127.0.0.1:9001}
