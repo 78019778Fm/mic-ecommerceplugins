@@ -11,12 +11,12 @@ import com.codecorecix.ecommerce.maintenance.user.api.dto.response.UserResponseD
 import com.codecorecix.ecommerce.maintenance.user.service.UserService;
 import com.codecorecix.ecommerce.maintenance.user.utils.UserConstants;
 import com.codecorecix.ecommerce.utils.GenericResponse;
+import com.codecorecix.ecommerce.utils.GenericResponseConstants;
 import com.codecorecix.ecommerce.utils.GenericUtils;
 import com.codecorecix.ecommerce.utils.MaintenanceUtils;
 
 import jakarta.validation.Valid;
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -102,6 +102,6 @@ public class UserController {
   @GetMapping("/authorized")
   public ResponseEntity<GenericResponse<Map<String, Object>>> retrieveAuthorizedUsers(@RequestParam(name = "code") final String code) {
     return ResponseEntity.status(HttpStatus.OK)
-        .body(GenericUtils.buildGenericResponseSuccess(StringUtils.EMPTY, Collections.singletonMap("code", code)));
+        .body(GenericUtils.buildGenericResponseSuccess(GenericResponseConstants.RETRIEVE_CODE_MSG, Collections.singletonMap("code", code)));
   }
 }

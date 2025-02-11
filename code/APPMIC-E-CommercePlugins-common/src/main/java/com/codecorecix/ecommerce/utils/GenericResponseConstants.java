@@ -28,6 +28,8 @@ public class GenericResponseConstants {
 
   public static final String UNAVAILABLE_SERVICE = "The service is not available, please try again later.";
 
+  public static final String RETRIEVE_CODE_MSG = "The code was successfully generated with oauth 2.1";
+
   public static final String VIEW = "/view";
 
   public static final String DASH = " - ";
