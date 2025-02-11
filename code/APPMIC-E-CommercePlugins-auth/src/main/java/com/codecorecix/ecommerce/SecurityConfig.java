@@ -1,5 +1,7 @@
 package com.codecorecix.ecommerce;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
@@ -17,9 +19,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -27,8 +26,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
@@ -61,28 +58,14 @@ public class SecurityConfig {
   public SecurityFilterChain authorizationServerSecurityFilterChain(final HttpSecurity http)
       throws Exception {
     OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-    OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = http.getConfigurer(OAuth2AuthorizationServerConfigurer.class);
+    http.getConfigurer(OAuth2AuthorizationServerConfigurer.class).oidc(withDefaults());
     http
-        .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
-        .with(authorizationServerConfigurer, authorizationServer -> authorizationServer.oidc(Customizer.withDefaults()))
-        .authenticationManager(authenticationManager())
-        .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
-        //        .oauth2ResourceServer(oauth2 -> oauth2
-        //            .jwt(jwt -> jwt
-        //                .jwtAuthenticationConverter(myConverter())
-        //            )
-        //        )
         .exceptionHandling(exceptions -> exceptions
             .defaultAuthenticationEntryPointFor(
                 new LoginUrlAuthenticationEntryPoint("/login"),
                 new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
-            )
-        );
-
-    //    http
-    //        .exceptionHandling(exceptions -> exceptions
-    //            .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
-    //        );
+            ))
+        .oauth2ResourceServer(resources -> resources.jwt(Customizer.withDefaults()));
     return http.build();
   }
 
@@ -92,8 +75,7 @@ public class SecurityConfig {
       throws Exception {
     http
         .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
-        .formLogin(Customizer.withDefaults()).csrf(AbstractHttpConfigurer::disable);
-
+        .formLogin(withDefaults()).csrf(AbstractHttpConfigurer::disable);
     return http.build();
   }
 
@@ -117,11 +99,12 @@ public class SecurityConfig {
         .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
         .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
         .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-        .redirectUri(environment.getProperty("LB_MAINTENANCE_URI", "http://127.0.0.1:9090") + "/api/users/authorized")
         .redirectUri(environment.getProperty("LB_MAINTENANCE_URI", "http://127.0.0.1:9090")
-            + "/login/oauth2/code/appmic-e-commerceplugins-maintenance-client")
+            + "/login/oauth2/code/maintenance-client")
+        .redirectUri(environment.getProperty("LB_MAINTENANCE_URI", "http://127.0.0.1:9090") + "/api/users/authorized")
         .tokenSettings(TokenSettings.builder().accessTokenTimeToLive(Duration.ofHours(1)).build())
         .scope(OidcScopes.OPENID)
+        .scope(OidcScopes.PROFILE)
         .scope("read")
         .scope("write")
         .clientSettings(ClientSettings.builder().requireAuthorizationConsent(false).build())
@@ -163,20 +146,5 @@ public class SecurityConfig {
   @Bean
   public AuthorizationServerSettings authorizationServerSettings() {
     return AuthorizationServerSettings.builder().build();
-  }
-
-  private AuthenticationManager authenticationManager() {
-    DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-    authenticationProvider.setUserDetailsService(userDetailsService());
-    authenticationProvider.setPasswordEncoder(passwordEncoder());
-
-    ProviderManager providerManager = new ProviderManager(authenticationProvider);
-    providerManager.setEraseCredentialsAfterAuthentication(false);
-
-    return providerManager;
-  }
-
-  private PasswordEncoder passwordEncoder() {
-    return PasswordEncoderFactories.createDelegatingPasswordEncoder();
   }
 }

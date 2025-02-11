@@ -6,15 +6,18 @@ spring:
           issuer-uri: ${LB_AUTH_ISSUER_URI:http://127.0.0.1:9001}
       client:
         registration:
-          appmic-e-commerceplugins-maintenance-client:
+          maintenance-client:
             provider: spring
             client-id: maintenance-client
             client-secret: 12345
             authorization-grant-type: authorization_code
             redirect-uri: ${LB_MAINTENANCE_URI:http://127.0.0.1:9090}/api/users/authorized
             scope:
+              - openid
+              - profile
               - read
-            client-name: appmic-e-commerceplugins-maintenance-client
+              - write
+            client-name: maintenance-client
         provider:
           spring:
             issuer-uri: ${LB_AUTH_ISSUER_URI:http://127.0.0.1:9001}
