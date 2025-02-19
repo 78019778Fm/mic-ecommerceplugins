@@ -1,5 +1,7 @@
 package com.codecorecix.ecommerce.maintenance.user.repository;
 
+import java.util.Optional;
+
 import com.codecorecix.ecommerce.event.entities.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +15,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
   @Modifying
   @Query("UPDATE User U SET U.isActive = ?1 WHERE U.id = ?2")
   void disabledOrEnabledUser(final Boolean isActive, final Integer id);
+
+  Optional<User> findByUsername(final String username);
 }

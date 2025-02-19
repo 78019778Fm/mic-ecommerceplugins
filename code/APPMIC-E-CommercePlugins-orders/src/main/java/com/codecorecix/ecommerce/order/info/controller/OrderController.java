@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,13 +31,14 @@ public class OrderController {
   private final OrderService service;
 
   @PostMapping
-  public ResponseEntity<GenericResponse<OrderResponseDto>> saveOrder(@RequestBody final OrderRequestDto orderRequestDto) {
+  public ResponseEntity<GenericResponse<OrderResponseDto>> saveOrder(@RequestBody final OrderRequestDto orderRequestDto,
+      @RequestHeader(value = "Authorization") final String token) {
     if (ObjectUtils.isNotEmpty(orderRequestDto.getId())) {
       throw new GenericUnprocessableEntityException(OrderConstants.UNPROCESSABLE_ENTITY_EXCEPTION);
     } else {
       OrdersUtils.validRequestDto(orderRequestDto);
       OrdersUtils.validRequestDto(orderRequestDto.getOrderDetails());
-      return ResponseEntity.status(HttpStatus.CREATED).body(this.service.saveOrder(orderRequestDto));
+      return ResponseEntity.status(HttpStatus.CREATED).body(this.service.saveOrder(orderRequestDto, token));
     }
   }
 

@@ -20,11 +20,11 @@
 				"method": "POST",
 				"header": [],
 				"body": {
-					"mode": "formdata",
-					"formdata": [
+					"mode": "urlencoded",
+					"urlencoded": [
 						{
 							"key": "code",
-							"value": "A-BUkq0FkRrPa2lQNnB3PlogkLuW_xxLOyl3bWsip3RYn5fCeI_JnUNVacIivMQClPBTcxTmJOPBO8IpVB3Unq8VcpCPD1vZwhkFqmkYZ5P4g40Xv8swKYRupPCZMh7g",
+							"value": "AqW-x50Mf9Mk66BXgUC-ne3TnaSxQX-YCyY9vhiK3yUc7YTPNGlysNh3vjCvtadEmfQ-xC-lFw5Pglv5Vuoma1w72Rob3BYVvihPtzkDl4gUBNC8KQFdf_CPQxHGBQJk",
 							"type": "text"
 						},
 						{
@@ -91,7 +91,7 @@
 					"formdata": [
 						{
 							"key": "username",
-							"value": "user",
+							"value": "Admin",
 							"type": "text"
 						},
 						{

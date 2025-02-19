@@ -19,6 +19,7 @@ import jakarta.validation.Valid;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -36,8 +37,11 @@ public class UserController {
 
   private final UserService service;
 
-  public UserController(UserService service) {
+  private final BCryptPasswordEncoder passwordEncoder;
+
+  public UserController(final UserService service, final BCryptPasswordEncoder passwordEncoder) {
     this.service = service;
+    this.passwordEncoder = passwordEncoder;
   }
 
   @GetMapping
@@ -61,6 +65,7 @@ public class UserController {
       throw new GenericUnprocessableEntityException(UserConstants.UNPROCESSABLE_ENTITY_EXCEPTION);
     } else {
       MaintenanceUtils.validRequestDto(userRequestDto);
+      userRequestDto.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
       return ResponseEntity.status(HttpStatus.CREATED).body(this.service.create(userRequestDto));
     }
   }
@@ -72,6 +77,7 @@ public class UserController {
     if (ObjectUtils.isNotEmpty(response.getBody())) {
       userRequestDto.setId(id);
       MaintenanceUtils.validRequestDto(userRequestDto);
+      userRequestDto.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
       return ResponseEntity.status(HttpStatus.OK).body(this.service.create(userRequestDto));
     } else {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
@@ -103,5 +109,15 @@ public class UserController {
   public ResponseEntity<GenericResponse<Map<String, Object>>> retrieveAuthorizedUsers(@RequestParam(name = "code") final String code) {
     return ResponseEntity.status(HttpStatus.OK)
         .body(GenericUtils.buildGenericResponseSuccess(GenericResponseConstants.RETRIEVE_CODE_MSG, Collections.singletonMap("code", code)));
+  }
+
+  @GetMapping("/login")
+  public ResponseEntity<GenericResponse<UserResponseDto>> loginByUsername(@RequestParam(name = "username") final String username) {
+    final GenericResponse<UserResponseDto> response = this.service.findByUsername(username);
+    if (Objects.nonNull(response.getBody())) {
+      return ResponseEntity.status(HttpStatus.OK).body(response);
+    } else {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
   }
 }

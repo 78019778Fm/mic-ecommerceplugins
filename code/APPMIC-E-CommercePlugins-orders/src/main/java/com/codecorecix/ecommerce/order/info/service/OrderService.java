@@ -11,9 +11,11 @@ public interface OrderService {
   /**
    * Method used to save the order.
    *
+   * @param orderRequestDto the order request dto.
+   * @param token the token
    * @return the OrderResponseDto.
    */
-  GenericResponse<OrderResponseDto> saveOrder(final OrderRequestDto orderRequestDto);
+  GenericResponse<OrderResponseDto> saveOrder(final OrderRequestDto orderRequestDto, final String token);
 
   /**
    * Method used to get all orders.
@@ -25,6 +27,7 @@ public interface OrderService {
   /**
    * Method used to get an order by id.
    *
+   * @param orderId the order id.
    * @return a {@link GenericResponse} containing an object of {@link OrderResponseDto}.
    */
   GenericResponse<OrderResponseDto> getOrderById(final Long orderId);

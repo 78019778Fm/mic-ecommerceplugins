@@ -5,6 +5,7 @@ metadata:
 data:
   lb_auth_issuer_uri: "http://127.0.0.1:41215"
   lb_maintenance_uri: "http://127.0.0.1:45819"
+  ms-maintenance_name: "appmic-e-commerceplugins-maintenance"
   port: "9090"
   db_host: "mysql:3306"
   database: "maintenance_service"

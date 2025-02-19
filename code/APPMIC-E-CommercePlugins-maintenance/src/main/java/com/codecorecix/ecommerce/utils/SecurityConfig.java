@@ -7,6 +7,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -19,9 +20,14 @@ public class SecurityConfig {
   private static final String[] COMMON_PATHS = {"/", "/{id}"};
 
   @Bean
+  public BCryptPasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
+
+  @Bean
   SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
     http.authorizeRequests(authorizeRequests -> authorizeRequests
-            .requestMatchers("/api/users/authorized").permitAll()
+            .requestMatchers("/api/users/authorized", "/api/users/login", "/api/users").permitAll()
             .requestMatchers(HttpMethod.GET, COMMON_PATHS).hasAnyAuthority(SCOPE_READ, SCOPE_WRITE)
             .requestMatchers(HttpMethod.POST, "/").hasAnyAuthority(SCOPE_WRITE)
             .requestMatchers(HttpMethod.PUT, COMMON_PATHS).hasAnyAuthority(SCOPE_WRITE)

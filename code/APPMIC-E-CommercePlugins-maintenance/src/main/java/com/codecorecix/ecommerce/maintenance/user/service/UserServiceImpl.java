@@ -72,4 +72,11 @@ public class UserServiceImpl implements UserService {
     return user.map(value -> UserUtils.buildGenericResponseSuccess(this.mapper.destinationToSource(value)))
         .orElseGet(UserUtils::buildGenericResponseError);
   }
+
+  @Override
+  public GenericResponse<UserResponseDto> findByUsername(final String userName) {
+    final Optional<User> user = this.repository.findByUsername(userName);
+    return user.map(value -> UserUtils.buildGenericResponseSuccess(this.mapper.destinationToSource(value)))
+        .orElseGet(UserUtils::buildGenericResponseError);
+  }
 }

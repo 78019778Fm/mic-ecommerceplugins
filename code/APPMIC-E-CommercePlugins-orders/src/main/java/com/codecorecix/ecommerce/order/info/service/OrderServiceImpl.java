@@ -40,7 +40,7 @@ public class OrderServiceImpl implements OrderService {
 
   @Override
   @Transactional
-  public GenericResponse<OrderResponseDto> saveOrder(final OrderRequestDto orderRequestDto) {
+  public GenericResponse<OrderResponseDto> saveOrder(final OrderRequestDto orderRequestDto, final String token) {
     try {
       final Order orderInfo = this.orderFieldsMapper.sourceToDestination(orderRequestDto);
       orderInfo.setOrderDate(LocalDateTime.now());
@@ -50,7 +50,7 @@ public class OrderServiceImpl implements OrderService {
         throw new OrderException(OrderErrorMessage.ERROR_RESOURCE_STATUS_NOT_AVAILABLE);
       }
       final Order orderBD = this.orderRepository.save(orderInfo);
-      this.orderDetailService.saveOrderDetails(orderRequestDto.getOrderDetails(), orderBD.getId());
+      this.orderDetailService.saveOrderDetails(orderRequestDto.getOrderDetails(), orderBD.getId(), token);
       final OrderResponseDto orderResponseDto = this.orderFieldsMapper.destinationToSource(orderBD);
       return new GenericResponse<>(GenericResponseConstants.RPTA_OK, GenericResponseConstants.CORRECT_OPERATION, orderResponseDto);
     } catch (final FeignException e) {

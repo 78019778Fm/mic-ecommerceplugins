@@ -46,4 +46,12 @@ public interface UserService {
    * @return List of UserResponseDto.
    */
   GenericResponse<UserResponseDto> findById(final Integer id);
+
+  /**
+   * Method used to find the user by username.
+   *
+   * @param userName The id of the user.
+   * @return List of UserResponseDto.
+   */
+  GenericResponse<UserResponseDto> findByUsername(final String userName);
 }
