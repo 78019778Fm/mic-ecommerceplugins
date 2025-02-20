@@ -16,7 +16,7 @@ spec:
         - image: alexanderpe/appmic-e-commerceplugins-auth:latest
           name: appmic-e-commerceplugins-auth
           ports:
-            - containerPort: 9000
+            - containerPort: 9001
           env:
             - name: LB_MAINTENANCE_URI
               valueFrom:
@@ -32,7 +32,7 @@ spec:
   type: LoadBalancer
   ports:
     - protocol: TCP
-      port: 9000
-      targetPort: 9000
+      port: 9001
+      targetPort: 9001
   selector:
     role: appmic-e-commerceplugins-auth
