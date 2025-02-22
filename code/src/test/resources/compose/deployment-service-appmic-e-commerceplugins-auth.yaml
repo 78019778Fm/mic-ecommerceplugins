@@ -23,6 +23,11 @@ spec:
                 configMapKeyRef:
                   name: appmic-e-commerceplugins-maintenance
                   key: lb_maintenance_uri
+            - name: MS_MAINTENANCE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: appmic-e-commerceplugins-maintenance
+                  key: ms-maintenance_name
 ---
 apiVersion: v1
 kind: Service
