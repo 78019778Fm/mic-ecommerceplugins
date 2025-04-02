@@ -13,6 +13,7 @@ import org.mapstruct.Mapping;
 public interface OrderDetailFieldsMapper {
 
   @Mapping(target = "order.id", source = "orderId")
+  @Mapping(target = "totalPrice", expression = "java(source.getQuantity() * source.getUnitPrice())")
   OrderDetail toEntity(final OrderDetailRequestDto source, final Integer orderId);
 
   List<OrderDetailResponseDto> toDto(final List<OrderDetail> orderDetails);

@@ -12,7 +12,9 @@ import com.codecorecix.ecommerce.utils.GenericResponse;
 import com.codecorecix.ecommerce.utils.OrdersUtils;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,13 +28,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/orders")
 @RequiredArgsConstructor
+@Slf4j
 public class OrderController {
 
   private final OrderService service;
 
+  private final Environment environment;
+
   @PostMapping
   public ResponseEntity<GenericResponse<OrderResponseDto>> saveOrder(@RequestBody final OrderRequestDto orderRequestDto,
       @RequestHeader(value = "Authorization") final String token) {
+    log.info("You are using the value: {}", environment.getProperty("feign.client.url"));
     if (ObjectUtils.isNotEmpty(orderRequestDto.getId())) {
       throw new GenericUnprocessableEntityException(OrderConstants.UNPROCESSABLE_ENTITY_EXCEPTION);
     } else {
