@@ -1,0 +1,13 @@
+# Configuration for dev profile
+spring:
+  config:
+    activate:
+      on-profile: dev
+feign.client.url: http://127.0.0.1:9090
+# Configuration for prod profile
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+feign.client.url: http://appmic-e-commerceplugins-maintenance

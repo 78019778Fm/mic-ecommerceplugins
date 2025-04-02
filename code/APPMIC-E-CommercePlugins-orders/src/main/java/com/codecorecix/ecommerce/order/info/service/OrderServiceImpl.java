@@ -10,7 +10,6 @@ import com.codecorecix.ecommerce.order.info.api.dto.request.OrderRequestDto;
 import com.codecorecix.ecommerce.order.info.api.dto.response.OrderResponseDto;
 import com.codecorecix.ecommerce.order.info.mapper.OrderFieldsMapper;
 import com.codecorecix.ecommerce.order.info.repository.OrderRepository;
-import com.codecorecix.ecommerce.order.info.utils.OrderConstants;
 import com.codecorecix.ecommerce.order.status.api.dto.response.OrderStatusResponseDto;
 import com.codecorecix.ecommerce.order.status.service.OrderStatusService;
 import com.codecorecix.ecommerce.utils.GenericResponse;
@@ -54,7 +53,9 @@ public class OrderServiceImpl implements OrderService {
       final OrderResponseDto orderResponseDto = this.orderFieldsMapper.destinationToSource(orderBD);
       return new GenericResponse<>(GenericResponseConstants.RPTA_OK, GenericResponseConstants.CORRECT_OPERATION, orderResponseDto);
     } catch (final FeignException e) {
-      return new GenericResponse<>(GenericResponseConstants.RPTA_ERROR, OrderConstants.UNAVAILABLE_SERVICE_MAINTENANCE, null);
+      throw new OrderException(OrderErrorMessage.SERVICE_PRODUCTS_NOT_AVAILABLE);
+    } catch (final OrderException ex) {
+      throw new OrderException(ex.getErrorMessage());
     }
   }
 

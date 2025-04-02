@@ -20,5 +20,6 @@ data:
   port: "9091"
   db_host: "mysql:3306"
   database: "orders_service"
+  spring_profile_active: "prod"
 #  username: root
 #  password: root_password

@@ -21,7 +21,4 @@ public class OrderDetailRequestDto implements Serializable {
 
   @NotNull(message = "The unitPrice is null, please fill")
   private Double unitPrice;
-
-  @NotNull(message = "The totalPrice is null, please fill")
-  private Double totalPrice;
 }
