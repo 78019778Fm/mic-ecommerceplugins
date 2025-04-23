@@ -57,6 +57,7 @@ public class GenericExceptionHandler {
       case ERROR_RESOURCE_STATUS_NOT_AVAILABLE, ERROR_RESOURCE_ORDER_NOT_AVAILABLE -> HttpStatus.NOT_FOUND;
       case SERVICE_PRODUCTS_NOT_AVAILABLE -> HttpStatus.SERVICE_UNAVAILABLE;
       case ERROR_INTERNAL -> HttpStatus.INTERNAL_SERVER_ERROR;
+      case INVALID_TOKEN -> HttpStatus.UNAUTHORIZED;
     };
     return new ResponseEntity<>(new GenericResponse<>(GenericResponseConstants.RPTA_ERROR, GenericResponseConstants.WRONG_OPERATION,
         new ErrorResponse(ex.getErrorCode(), errorMessage.getErrorMessage())), status);

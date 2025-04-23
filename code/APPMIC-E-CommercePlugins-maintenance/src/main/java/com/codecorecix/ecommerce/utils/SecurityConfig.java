@@ -19,6 +19,8 @@ public class SecurityConfig {
 
   private static final String[] COMMON_PATHS = {"/", "/{id}"};
 
+  public static final String ROOT_PATH = "/";
+
   @Bean
   public BCryptPasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
@@ -29,7 +31,7 @@ public class SecurityConfig {
     http.authorizeRequests(authorizeRequests -> authorizeRequests
             .requestMatchers("/api/users/authorized", "/api/users/login", "/api/users", "/api/products/checkProducts").permitAll()
             .requestMatchers(HttpMethod.GET, COMMON_PATHS).hasAnyAuthority(SCOPE_READ, SCOPE_WRITE)
-            .requestMatchers(HttpMethod.POST, "/").hasAnyAuthority(SCOPE_WRITE)
+            .requestMatchers(HttpMethod.POST, ROOT_PATH).hasAnyAuthority(SCOPE_WRITE)
             .requestMatchers(HttpMethod.PUT, COMMON_PATHS).hasAnyAuthority(SCOPE_WRITE)
             .requestMatchers(HttpMethod.DELETE, COMMON_PATHS).hasAnyAuthority(SCOPE_WRITE)
             .requestMatchers(HttpMethod.PATCH, COMMON_PATHS).hasAnyAuthority(SCOPE_WRITE)

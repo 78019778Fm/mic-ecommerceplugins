@@ -1,8 +1,6 @@
-package com.codecorecix.ecommerce.maintenance.user.api.dto.response;
+package com.codecorecix.ecommerce.event.models;
 
 import java.util.List;
-
-import com.codecorecix.ecommerce.maintenance.role.dto.response.RoleResponseDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
