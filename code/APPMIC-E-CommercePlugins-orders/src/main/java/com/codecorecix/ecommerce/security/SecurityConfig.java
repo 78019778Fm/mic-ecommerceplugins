@@ -29,9 +29,13 @@ public class SecurityConfig {
 
   private static final String ROLE_USER = "USER";
 
-  private static final String[] COMMON_PATHS = {"/", "/{id}"};
+  private static final String ORDERS_ROOT_PATH = "/api/orders";
 
-  public static final String ROOT_PATH = "/";
+  private static final String ORDERS_PATH = "/api/orders/{id}";
+
+  private static final String STATUS_ROOT_PATH = "/api/orders/status";
+
+  private static final String STATUS_PATH = "/api/orders/status/{id}";
 
   private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
@@ -49,11 +53,11 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
     return http.authorizeHttpRequests(auth -> auth
-            .requestMatchers(HttpMethod.GET, COMMON_PATHS).hasAnyRole(ROLE_ADMIN, ROLE_USER)
-            .requestMatchers(HttpMethod.POST, ROOT_PATH).hasAnyRole(ROLE_ADMIN, ROLE_USER)
-            .requestMatchers(HttpMethod.PUT, COMMON_PATHS).hasRole(ROLE_ADMIN)
-            .requestMatchers(HttpMethod.DELETE, COMMON_PATHS).hasRole(ROLE_ADMIN)
-            .requestMatchers(HttpMethod.PATCH, COMMON_PATHS).hasRole(ROLE_ADMIN)
+            .requestMatchers(HttpMethod.GET, ORDERS_ROOT_PATH, STATUS_ROOT_PATH).hasAnyRole(ROLE_ADMIN, ROLE_USER)
+            .requestMatchers(HttpMethod.POST, ORDERS_ROOT_PATH, STATUS_ROOT_PATH).hasAnyRole(ROLE_ADMIN, ROLE_USER)
+            .requestMatchers(HttpMethod.PUT, ORDERS_PATH, STATUS_PATH).hasRole(ROLE_ADMIN)
+            .requestMatchers(HttpMethod.DELETE, ORDERS_PATH, STATUS_PATH).hasRole(ROLE_ADMIN)
+            .requestMatchers(HttpMethod.PATCH, ORDERS_PATH, STATUS_PATH).hasRole(ROLE_ADMIN)
             .anyRequest().authenticated())
         .exceptionHandling(exception -> exception
             .accessDeniedHandler(customAccessDeniedHandler)
