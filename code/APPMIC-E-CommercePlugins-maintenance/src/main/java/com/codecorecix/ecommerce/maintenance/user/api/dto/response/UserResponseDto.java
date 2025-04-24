@@ -1,5 +1,9 @@
 package com.codecorecix.ecommerce.maintenance.user.api.dto.response;
 
+import java.util.List;
+
+import com.codecorecix.ecommerce.maintenance.role.dto.response.RoleResponseDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,4 +22,6 @@ public class UserResponseDto {
   private String password;
 
   private Boolean isActive;
+
+  private List<RoleResponseDto> roles;
 }
