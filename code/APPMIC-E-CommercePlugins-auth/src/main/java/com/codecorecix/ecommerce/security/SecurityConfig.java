@@ -1,4 +1,4 @@
-package com.codecorecix.ecommerce;
+package com.codecorecix.ecommerce.security;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 

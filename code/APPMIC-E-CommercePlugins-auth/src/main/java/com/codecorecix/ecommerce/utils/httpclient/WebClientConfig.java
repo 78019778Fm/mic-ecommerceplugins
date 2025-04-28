@@ -1,4 +1,4 @@
-package com.codecorecix.ecommerce;
+package com.codecorecix.ecommerce.utils.httpclient;
 
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;

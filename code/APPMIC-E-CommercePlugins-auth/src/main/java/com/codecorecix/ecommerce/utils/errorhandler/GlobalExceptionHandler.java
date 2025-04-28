@@ -1,4 +1,4 @@
-package com.codecorecix.ecommerce.errorhandler;
+package com.codecorecix.ecommerce.utils.errorhandler;
 
 import com.codecorecix.ecommerce.utils.GenericResponse;
 import com.codecorecix.ecommerce.utils.GenericResponseConstants;

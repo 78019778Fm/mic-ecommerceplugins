@@ -2,7 +2,7 @@ package com.codecorecix.ecommerce.services;
 
 import java.util.Collections;
 
-import com.codecorecix.ecommerce.models.UserResponseDto;
+import com.codecorecix.ecommerce.event.models.UserResponseDto;
 import com.codecorecix.ecommerce.utils.GenericResponse;
 
 import org.apache.commons.lang3.StringUtils;
